@@ -1,0 +1,4 @@
+# ignore summary statistics and tables
+tables/
+sum_stats/
+plotting/
