@@ -1,5 +1,22 @@
 library(dplyr)
 
+args <- commandArgs(trailingOnly = TRUE)
+
+if (length(args)<2) {
+    stop("At least two argument must be supplied", call.=FALSE)
+} else if (length(args)==2) {
+    boot <- FALSE
+} else if (length(args) == 3) {
+    boot <- as.logical(args[3])
+    boot_n <- 100
+} else {
+    boot <- as.logical(args[3])
+    boot_n <- as.numeric(args[4])
+}
+
+phen_path <- args[1]
+phen_name <- args[2]
+
 # this function takes in the covariate dataframe (df), PRS dataframe (df), pheno_name (string), and p value (string)
 calc_r2 <- function(covarpc_df, prs_df, pheno_df, pheno_name, pval) {
   
@@ -48,7 +65,6 @@ calc_thetaeo <- function(covarpc_df, prs_df, pval) {
   return(theta_eo_num)
   
 }
-
 
 # this function bootstraps the hairpin for a specific phenotype
 bootstrap_hairpin <- function(boot_num, pheno_filename, pheno_name) {
@@ -119,7 +135,7 @@ make_hairpin <- function(pheno_path, pheno_name, boot_seed = 0) {
         pc_df <- read.table("/gpfs/data/ukb-share/extracted_phenotypes/covariates_sa40PC/covariates_sa40PC_age.pheno", header=TRUE, sep = " ") 
         pc_df <- pc_df %>% select(pc_header(pc))
 
-        prs_df <- read.table(paste0("/gpfs/data/ukb-share/dahl/ophelia/hairpin/tables", pheno_name, pc, ".table"), header=TRUE, sep = " ")
+        prs_df <- read.table(paste0("/scratch/osdominguez/tables", pheno_name, pc, ".table"), header=TRUE, sep = " ")
 
         # if a bootstrap is being called for resample the dataframe with a set seed 
         if (boot_seed != 0) {
@@ -129,7 +145,7 @@ make_hairpin <- function(pheno_path, pheno_name, boot_seed = 0) {
         }
 
     
-    for (pval in pval_list) {
+    for (pval in pvals_list) {
         
         # select the FID and IID of participants. Also select the column names with the pvalue of interest in it
         prs_subset <- prs_df %>% select(c(FID, IID, contains(pval)))       
@@ -170,36 +186,15 @@ make_hairpin <- function(pheno_path, pheno_name, boot_seed = 0) {
 }
 
 txt_path <- file.path('/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files')
-height_path <- "/gpfs/data/ukb-share/extracted_phenotypes/Height/Height674178.pheno"
-#wh_path <- ""
-ldl_path <- "/gpfs/data/ukb-share/extracted_phenotypes/LDL/LDL674178.pheno"
-bmi_path <- "/gpfs/data/ukb-share/extracted_phenotypes/BMI/BMI674178.pheno"
-#edu_path <- ""
+out_dir <- "/gpfs/data/ukb-share/dahl/ophelia/hairpin/plotting/"
 
 pcs <- scan(file.path(txt_path, '/pcs.txt'), what = integer())
-pvals_chr <- scan(file.path(txt_path, '/pvalues.txt'), what = character())
-pvals_num <- as.numeric(pvals_chr)
+pvals_list <- scan(file.path(txt_path, '/pvalues.txt'), what = character())
 
-base_height <- make_hairpin(height_path, "height")
-base_wh <- make_hairpin(wh_path, "WHRadjBMI")
-base_ldl <- make_hairpin(ldl_path, "LDL")
-base_bmi <- make_hairpin(gmi_path, "BMI")
-base_edu <- make_hairpin(edu_path, "edu_attain")
+base <- make_hairpin(phen_path, phen_name)
+write.table(base, file = paste0(out_dir, phen_name, "_base.table"), row.names = F, quote = F) 
 
-dataframes <- list(base_height, base_wh, base_ldl, base_bmi, base_edu)   
-base <- do.call(rbind, dataframes)
-
-# write the table
-write.table(base,  file = "/gpfs/data/ukb-share/dahl/shevaughn/hairpin/plotting/phenotype_base.table", row.names = F, quote = F) 
-
-boot_height <- bootstrap_hairpin(100, height_path, "height")
-boot_wh <- bootstrap_hairpin(100,wh_path, "WHRadjBMI") 
-boot_ldl <- bootstrap_hairpin(100, ldl_path, "LDL") 
-boot_bmi <- bootstrap_hairpin(100, bmi_path, "BMI")
-boot_edu <- bootstrap_haairpin(100, edu_path, "edu_attain")
-
-dataframes <- list(boot_height, boot_wh, boot_ldl, boot_bmi, boot_edu)   
-boot <- do.call(rbind, dataframes)
-
-# write the table
-write.table(boot,  file = "/gpfs/data/ukb-share/dahl/shevaughn/hairpin/plotting/phenotype_confint.table", row.names = F, quote = F) 
+if (boot) {
+    boot_hairpin <- bootstrap_hairpin(boot_n, phen_path, phen_name)
+    write.table(boot, file = paste0(out_dir, phen_name, "_confint.table"), row.names = F, quote = F) 
+}

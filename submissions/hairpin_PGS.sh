@@ -67,5 +67,5 @@ Rscript /gpfs/data/ukb-share/dahl/ophelia/PRSice.R \
     --"${STAT_TYPE}" \
     --out ${OUT_DIR}/${DIR}/${PHEN_NAME}_prs_${PC_N}pc_${PGS_THRESH}pval
 
-chgrp ${OUT_DIR}/${DIR}/*
+chgrp cri-ukb_share ${OUT_DIR}/${DIR}/*
 chmod g+rx ${OUT_DIR}/${DIR}/*

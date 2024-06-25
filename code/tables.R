@@ -45,7 +45,7 @@ make_prs_df <- function(pheno){
             }    
         }
 
-        write.table(ids_df, file = paste0("/gpfs/data/ukb-share/dahl/ophelia/hairpin/tables/", paste0(pheno,pc),".table"), row.names = F, quote = F)
+        write.table(ids_df, file = paste0("/scratch/osdominguez/tables/", paste0(pheno,pc),".table"), row.names = F, quote = F)
         
     }
 }

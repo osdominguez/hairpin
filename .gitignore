@@ -1,4 +1,3 @@
-# ignore summary statistics and tables
-tables/
+# ignore summary statistics and output files
 sum_stats/
 plotting/
