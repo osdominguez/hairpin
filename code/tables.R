@@ -1,5 +1,15 @@
+rm(list=ls())
+
 library(dplyr) 
 library(data.table)
+
+args <- commandArgs(trailingOnly = TRUE)
+
+if (length(args)!=1) {
+    stop("Only one argument has to be supplied", call.=FALSE)
+} 
+
+phen <- toString(args[1])
 
 txt_path <- file.path('/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files')
 
@@ -27,7 +37,7 @@ make_prs_df <- function(pheno) {
         }
 
         for (pval in pvals) {
-            if (fe) {
+            if (!fe) {
                 odd_path <- paste0("/scratch/osdominguez/prs_hairpin_outputs/odd/", pheno,"_prs_",pc,"pc_",pval,"pval.best")
                 even_path <- paste0("/scratch/osdominguez/prs_hairpin_outputs/even/", pheno,"_prs_",pc,"pc_",pval,"pval.best")
                 all_path <- paste0("/scratch/osdominguez/prs_hairpin_outputs/all/", pheno,"_prs_",pc,"pc_",pval,"pval.best")
@@ -54,7 +64,7 @@ make_prs_df <- function(pheno) {
 
                 }
             } else {
-                if (!(pval %in% alr_pvals)) {
+                if (!(paste0("all_", pval) %in% alr_pvals)) {
                     odd_path <- paste0("/scratch/osdominguez/prs_hairpin_outputs/odd/", pheno,"_prs_",pc,"pc_",pval,"pval.best")
                     even_path <- paste0("/scratch/osdominguez/prs_hairpin_outputs/even/", pheno,"_prs_",pc,"pc_",pval,"pval.best")
                     all_path <- paste0("/scratch/osdominguez/prs_hairpin_outputs/all/", pheno,"_prs_",pc,"pc_",pval,"pval.best")
@@ -84,10 +94,8 @@ make_prs_df <- function(pheno) {
 
         write.table(ids_df, file = paste0("/scratch/osdominguez/tables/", paste0(pheno,pc),".table"), row.names = F, quote = F)
         
+        }
     }
 }
 
-make_prs_df("height")
-make_prs_df("BMI")
-make_prs_df("LDL") 
-#make_prs_df("edu_years", prs_dfs)
+make_prs_df(phen)

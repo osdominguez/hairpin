@@ -1,3 +1,5 @@
+rm(list=ls())
+
 library(dplyr)
 
 args <- commandArgs(trailingOnly = TRUE)
@@ -88,7 +90,7 @@ bootstrap_hairpin <- function(boot_num, pheno_filename, pheno_name, pheno_id) {
         
     } 
 
-  write.table(bootstrap_hairpin_df,  file = paste0("/gpfs/data/ukb-share/dahl/ophelia/hairpin/plotting",pheno_name,"_bootstrap.table"), row.names = F, quote = F)
+  write.table(bootstrap_hairpin_df,  file = paste0("/gpfs/data/ukb-share/dahl/ophelia/hairpin/plotting/",pheno_name,"_bootstrap.table"), row.names = F, quote = F)
 
   # finding the confidence intervals for each threshold 
   confint_table <- bootstrap_hairpin_df %>% 
@@ -104,6 +106,7 @@ bootstrap_hairpin <- function(boot_num, pheno_filename, pheno_name, pheno_id) {
 }
 
 # this function generates the necessary column names for a specific number of pcs
+# R doesn't like the "-" in some of the headers so it changes them to "."
 pc_header <- function(n_pcs) {
     cols <- c("FID", "IID", "X31.0.0", "X34.0.0")
     if(n_pcs <= 0) {
@@ -148,7 +151,6 @@ make_hairpin <- function(pheno_path, pheno_name, pheno_id, boot_seed = 0) {
             prs_df <- prs_df[sample(nrow(prs_df), replace = TRUE), ]     
         }
 
-    
     for (pval in pvals_list) {
         
         # select the FID and IID of participants. Also select the column names with the pvalue of interest in it
@@ -177,7 +179,6 @@ make_hairpin <- function(pheno_path, pheno_name, pheno_id, boot_seed = 0) {
         
         }
         
-        
         # add the new row to the dataframe
         hairpin_df <- rbind(hairpin_df, new_row)
         
@@ -189,6 +190,7 @@ make_hairpin <- function(pheno_path, pheno_name, pheno_id, boot_seed = 0) {
 
 }
 
+
 txt_path <- file.path('/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files')
 out_dir <- "/gpfs/data/ukb-share/dahl/ophelia/hairpin/plotting/"
 
@@ -196,7 +198,7 @@ pcs <- scan(file.path(txt_path, '/pcs.txt'), what = integer())
 pvals_list <- scan(file.path(txt_path, '/pvalues.txt'), what = character())
 
 base <- make_hairpin(phen_path, phen_name, phen_id)
-write.table(base, file = paste0(out_dir, phen_name, "_base.table"), row.names = F, quote = F) 
+write.table(base, file = paste0(out_dir, phen_name, "_base.table"), row.names = F, quote = F)
 
 if (boot) {
     boot_hairpin <- bootstrap_hairpin(boot_n, phen_path, phen_name, phen_id)
