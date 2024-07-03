@@ -78,20 +78,18 @@ bootstrap_hairpin <- function(boot_num, pheno_filename, pheno_name, pheno_id) {
                                     #### Actually doing the bootsrap ####
 
 
-
     # for each dataframe, make the hairpin and append it to the final dataframe
     for (i in 1:boot_num){
     
         # call the hairpin function
-        hairpin_output <- make_hairpin(pheno_filename, pheno_id, i) %>% mutate(replicate = i)
+        hairpin_output <- make_hairpin(pheno_filename, pheno_name, pheno_id, i) %>% mutate(replicate = i)
         
         # append
         bootstrap_hairpin_df <- rbind(bootstrap_hairpin_df, hairpin_output)
-        
+
+        write.table(bootstrap_hairpin_df,  file = paste0("/gpfs/data/ukb-share/dahl/ophelia/hairpin/plotting/",pheno_name,"_bootstrap.table"), row.names = F, quote = F)  
     } 
-
-  write.table(bootstrap_hairpin_df,  file = paste0("/gpfs/data/ukb-share/dahl/ophelia/hairpin/plotting/",pheno_name,"_bootstrap.table"), row.names = F, quote = F)
-
+    
   # finding the confidence intervals for each threshold 
   confint_table <- bootstrap_hairpin_df %>% 
     group_by(phenotype, pc_num, threshold) %>% 

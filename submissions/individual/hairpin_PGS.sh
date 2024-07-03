@@ -9,11 +9,9 @@
 module load gcc/12.1.0
 module load R/4.3.1
 
-COV_FILE=/gpfs/data/ukb-share/extracted_phenotypes/covariates_sa40PC/covariates_sa40PC_age.pheno
+COV_FILE=/gpfs/data/ukb-share/extracted_phenotypes/covar_full/covar_full_age2.pheno
 OUT_DIR=/scratch/osdominguez/prs_hairpin_outputs
 PHEN_DIR=/gpfs/data/ukb-share/extracted_phenotypes
-
-COVS=FID,IID,31-0.0,34-0.0
 
 GEN_FILE=$1
 SUM_FILE=$2 
@@ -32,11 +30,18 @@ PHEN_NAME=${14}
 PC_N=${15}
 DIR=${16}
 MAF=${17} 
+ASSESS=${18}
+
+if [[ ${ASSESS} == "as_" ]]; then
+  COVS=FID,IID,X31.0.0,X34.0.0,X54.0.0,X22000-0.0,age2
+else
+  COVS=FID,IID,X31.0.0,X34.0.0,X54.0.0,age2
+fi
 
 i=1
 while [ $i -le $PC_N ]
 do
-  COVS+=",22009-0.${i}"
+  COVS+=",X22009.0.${i}"
   i=$(( $i + 1 ))
 done
 
@@ -65,7 +70,7 @@ Rscript /gpfs/data/ukb-share/dahl/ophelia/PRSice.R \
     --base-info INFO:0.8 \
     --base-maf ${MAF} \
     --"${STAT_TYPE}" \
-    --out ${OUT_DIR}/${DIR}/${PHEN_NAME}_prs_${PC_N}pc_${PGS_THRESH}pval
+    --out ${OUT_DIR}/${DIR}/${PHEN_NAME}_prs_${ASSESS}${PC_N}pc_${PGS_THRESH}pval
 
 chgrp cri-ukb_share ${OUT_DIR}/${DIR}/*
 chmod g+rx ${OUT_DIR}/${DIR}/*

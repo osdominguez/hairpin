@@ -10,92 +10,97 @@ TXT_DIR=/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files
 PHENO_DIR=/gpfs/data/ukb-share/extracted_phenotypes
 BED_DIR=/scratch/osdominguez/bgen_files/white_brit_unrelated
 SUM_DIR=/gpfs/data/ukb-share/dahl/ophelia/hairpin/sum_stats/nodups_sumstats
-SCRIPT_PATH="/gpfs/data/ukb-share/dahl/ophelia/hairpin/submissions/hairpin_PGS.sh"
+SCRIPT_PATH="/gpfs/data/ukb-share/dahl/ophelia/hairpin/submissions/individual/hairpin_PGS.sh"
 
 mapfile -t pvals < ${TXT_DIR}/pvalues.txt
 
 mapfile -t PC_number < ${TXT_DIR}/pcs.txt
 
+assess=( "as_" "noas_" )
+
 sub_phenotype() {
 
-n=0
+  for as in  "${assess[@]}"; do
 
-for pc_n in "${PC_number[@]}"; do
+    for pc_n in "${PC_number[@]}"; do
 
-    for p_value in "${pvals[@]}"; do 
-    	
-      #run odd chromosome PRS
-       [ ! -f /scratch/osdominguez/prs_hairpin_outputs/odd/${12}_prs_${pc_n}pc_${p_value}pval.best ] && \
-        sbatch ${SCRIPT_PATH} \
-          ${BED_DIR}/ukb_imp_chr0O_v3_whitebrit_unrelated_QC \
-          ${SUM_DIR}/$1 \
-          $2 \
-          ${PHEN_DIR}/$3 \
-          $4 \
-          $5 \
-          $6 \
-          $7 \
-          $8 \
-          $9 \
-          ${10} \
-          ${p_value} \
-          ${11} \
-          ${12} \
-          ${pc_n} \
-          "odd" \
-          ${13}
+      for p_value in "${pvals[@]}"; do 
+        
+        #run odd chromosome PRS
+        [ ! -f /scratch/osdominguez/prs_hairpin_outputs/odd/${12}_prs_${as}${pc_n}pc_${p_value}pval.best ] && \
+          sbatch ${SCRIPT_PATH} \
+            ${BED_DIR}/ukb_imp_chr0O_v3_whitebrit_unrelated_QC \
+            ${SUM_DIR}/$1 \
+            $2 \
+            ${PHEN_DIR}/$3 \
+            $4 \
+            $5 \
+            $6 \
+            $7 \
+            $8 \
+            $9 \
+            ${10} \
+            ${p_value} \
+            ${11} \
+            ${12} \
+            ${pc_n} \
+            "odd" \
+            ${13} \
+            ${as}
 
-      #run even chromosome PRS
-        [ ! -f /scratch/osdominguez/prs_hairpin_outputs/even/${12}_prs_${pc_n}pc_${p_value}pval.best ] && \
-        sbatch ${SCRIPT_PATH} \
-          ${BED_DIR}/ukb_imp_chr0E_v3_whitebrit_unrelated_QC \
-          ${SUM_DIR}/$1 \
-          $2 \
-          ${PHEN_DIR}/$3 \
-          $4 \
-          $5 \
-          $6 \
-          $7 \
-          $8 \
-          $9 \
-          ${10} \
-          ${p_value} \
-          ${11} \
-          ${12} \
-          ${pc_n} \
-          "even" \
-          ${13}  
-      
-      #run all chromosome PRS
-        [ ! -f /scratch/osdominguez/prs_hairpin_outputs/all/${12}_prs_${pc_n}pc_${p_value}pval.best ] && \
-        sbatch ${SCRIPT_PATH} \
-          ${BED_DIR}/ukb_imp_chr0E_v3_whitebrit_unrelated_QC \
-          ${SUM_DIR}/$1 \
-          $2 \
-          ${PHEN_DIR}/$3 \
-          $4 \
-          $5 \
-          $6 \
-          $7 \
-          $8 \
-          $9 \
-          ${10} \
-          ${p_value} \
-          ${11} \
-          ${12} \
-          ${pc_n} \
-          "all" \
-          ${13}  
+        #run even chromosome PRS
+          [ ! -f /scratch/osdominguez/prs_hairpin_outputs/even/${12}_prs_${as}${pc_n}pc_${p_value}pval.best ] && \
+          sbatch ${SCRIPT_PATH} \
+            ${BED_DIR}/ukb_imp_chr0E_v3_whitebrit_unrelated_QC \
+            ${SUM_DIR}/$1 \
+            $2 \
+            ${PHEN_DIR}/$3 \
+            $4 \
+            $5 \
+            $6 \
+            $7 \
+            $8 \
+            $9 \
+            ${10} \
+            ${p_value} \
+            ${11} \
+            ${12} \
+            ${pc_n} \
+            "even" \
+            ${13} \
+            ${as} 
+        
+        #run all chromosome PRS
+          [ ! -f /scratch/osdominguez/prs_hairpin_outputs/all/${12}_prs_${as}${pc_n}pc_${p_value}pval.best ] && \
+          sbatch ${SCRIPT_PATH} \
+            ${BED_DIR}/ukb_imp_chr0E_v3_whitebrit_unrelated_QC \
+            ${SUM_DIR}/$1 \
+            $2 \
+            ${PHEN_DIR}/$3 \
+            $4 \
+            $5 \
+            $6 \
+            $7 \
+            $8 \
+            $9 \
+            ${10} \
+            ${p_value} \
+            ${11} \
+            ${12} \
+            ${pc_n} \
+            "all" \
+            ${13} \
+            ${as}
+
+      done
 
     done
 
-n=$((n + 1))
-
-done
+  done
 
 }
 
-#function_call	sumstat_file_name is_binary pheno_file_path (relative to extracted phehnotypes) stat_column_name snpID_column_name   chr_col_name   bp_col_name   A1_col   A2_col   p_val_col   stat   pheno_name   mafname_mafscore 
+#function_call	sumstat_file_name is_binary pheno_file_path (relative to extracted phehnotypes) stat_column_name snpID_column_name   chr_col_name   bp_col_name   A1_col   A2_col   p_val_col   stat   pheno_name   mafname_mafscore  
 
 sub_phenotype GIANT_HEIGHT_new_R.csv F Height/Height674178.pheno BETA RSID CHR POS EFFECT_ALLELE OTHER_ALLELLE P beta height EFFECT_ALLELE_FREQ:0.05
 

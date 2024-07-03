@@ -19,6 +19,10 @@ boot_df <- read.table(paste0(table_dir, phen_name, "_bootstrap.table"), header =
 cof_df <- read.table(paste0(table_dir, phen_name, "_cofint.table"), header = TRUE)
 
 
+get_epsilon <- function(full_boot, boot_n, phen, pc) {
+  
+}
+
 get_resid <- function(full_boot, boot_n, phen, pc){
   # make an empty dataframe that just contains all pvalue thresholds
   uniq_p <- unique(full_boot$threshold)
@@ -69,3 +73,6 @@ get_resid <- function(full_boot, boot_n, phen, pc){
   return(eps_df)
 }
 
+get_beta <- function(eps, hairpin) {
+  omega <- cov(eps)
+}

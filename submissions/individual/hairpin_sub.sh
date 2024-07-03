@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 #SBATCH --job-name=hairpin_analysis
-#SBATCH --time=12:00:00
-#SBATCH --mem=10gb
+#SBATCH --time=24:00:00
+#SBATCH --mem=20gb
 #SBATCH --output=/home/osdominguez/output/hairpin_analysis/hairpin_analysis_%a_%A.out
 #SBATCH --error=/home/osdominguez/output/hairpin_analysis/hairpin_analysis_%a_%A.err
 

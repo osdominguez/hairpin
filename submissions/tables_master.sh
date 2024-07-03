@@ -6,7 +6,7 @@
 #SBATCH --output=/home/osdominguez/output/hairpin_PGS/PGS_tables_master_%a_%A.out
 #SBATCH --error=/home/osdominguez/output/hairpin_PGS/PGS_tables_master_%a_%A.err
 
-SCRIPT_PATH='/gpfs/data/ukb-share/dahl/ophelia/hairpin/submissions/tables_sub.sh'
+SCRIPT_PATH='/gpfs/data/ukb-share/dahl/ophelia/hairpin/submissions/individual/tables_sub.sh'
 
 sbatch ${SCRIPT_PATH} "height"
 sbatch ${SCRIPT_PATH} "BMI"
