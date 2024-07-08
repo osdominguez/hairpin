@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#SBATCH --job-name=Hairpin_linearity =
+#SBATCH --job-name=Hairpin_linearity
 #SBATCH --time=12:00:00
 #SBATCH --mem=10gb
 #SBATCH --output=/home/osdominguez/output/hairpin_PGS/linearity_%a_%A.out
