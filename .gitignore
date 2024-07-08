@@ -1,3 +1,5 @@
 # ignore summary statistics and output files
 sum_stats/
 plotting/
+old/
+plots/

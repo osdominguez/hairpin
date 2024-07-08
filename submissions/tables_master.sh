@@ -2,7 +2,7 @@
 
 #SBATCH --job-name=Hairpin_PGS_tables_master
 #SBATCH --time=00:30:00
-#SBATCH --mem=500mb
+#SBATCH --mem=250mb
 #SBATCH --output=/home/osdominguez/output/hairpin_PGS/PGS_tables_master_%a_%A.out
 #SBATCH --error=/home/osdominguez/output/hairpin_PGS/PGS_tables_master_%a_%A.err
 

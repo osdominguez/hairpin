@@ -1,115 +1,87 @@
 #!/usr/bin/env bash
 
-#SBATCH --job-name=test_submit_pgs
-#SBATCH --time=01:00:00
-#SBATCH --mem=1gb
-#SBATCH --output=/home/osdominguez/output/SUBMIT_HAIRPIN_PGS_%a_%A.out
-#SBATCH --error=/home/osdominguez/output/SUBMIT_HAIRPIN_PGS_%a_%A.err
+#SBATCH --job-name=Hairpin_PGS
+#SBATCH --time=12:00:00
+#SBATCH --mem=10gb
+#SBATCH --output=/home/osdominguez/output/hairpin_PGS/hairpin_PGS_%a_%A.out
+#SBATCH --error=/home/osdominguez/output/hairpin_PGS/hairpin_PGS_%a_%A.err
+#SBATCH --array=1-12600%300
 
-TXT_DIR=/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files
-PHENO_DIR=/gpfs/data/ukb-share/extracted_phenotypes
-BED_DIR=/scratch/osdominguez/bgen_files/white_brit_unrelated
-SUM_DIR=/gpfs/data/ukb-share/dahl/ophelia/hairpin/sum_stats/nodups_sumstats
-SCRIPT_PATH="/gpfs/data/ukb-share/dahl/ophelia/hairpin/submissions/individual/hairpin_PGS.sh"
+module load gcc/12.1.0
+module load R/4.3.1
 
-mapfile -t pvals < ${TXT_DIR}/pvalues.txt
+COV_FILE=/gpfs/data/ukb-share/extracted_phenotypes/covar_full/covar_full_age2.pheno
+OUT_DIR=/scratch/osdominguez/prs_hairpin_outputs
 
-mapfile -t PC_number < ${TXT_DIR}/pcs.txt
+TXT_PATH=/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/combinations.txt
+PHENO_DIR="/gpfs/data/ukb-share/extracted_phenotypes"
+BED_DIR="/scratch/osdominguez/bgen_files/white_brit_unrelated"
+SUM_DIR="/gpfs/data/ukb-share/dahl/ophelia/hairpin/sum_stats/nodups_sumstats"
 
-assess=( "as_" "noas_" )
+readarray -t parms < <(awk -v row="${SLURM_ARRAY_TASK_ID}" 'NR == row {for(i=1; i<=NF; i++) print $i}' "${TXT_PATH}")
 
-sub_phenotype() {
+as=${parms[0]}
+pc_n=${parms[1]}
+p_value=${parms[2]}
+sum=${parms[3]}
+binary=${parms[4]}
+ppath=${parms[5]}
+scol=${parms[6]}
+id=${parms[7]}
+chr=${parms[8]}
+bp=${parms[9]}
+a1=${parms[10]}
+a2=${parms[11]}
+pcol=${parms[12]}
+stat=${parms[13]}
+pname=${parms[14]}
+maf=${parms[15]}
+dir=${parms[16]}
+bfile=${parms[17]}
 
-  for as in  "${assess[@]}"; do
+[[ ! /scratch/osdominguez/prs_hairpin_outputs/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval.best ]] && { exit 1; }
 
-    for pc_n in "${PC_number[@]}"; do
+if [[ ${as} == "as_" ]]; then
+    COVS=FID,IID,X31.0.0,X34.0.0,X54.0.0,X22000-0.0,age2
+else
+    COVS=FID,IID,X31.0.0,X34.0.0,X54.0.0,age2
+fi
 
-      for p_value in "${pvals[@]}"; do 
-        
-        #run odd chromosome PRS
-        [ ! -f /scratch/osdominguez/prs_hairpin_outputs/odd/${12}_prs_${as}${pc_n}pc_${p_value}pval.best ] && \
-          sbatch ${SCRIPT_PATH} \
-            ${BED_DIR}/ukb_imp_chr0O_v3_whitebrit_unrelated_QC \
-            ${SUM_DIR}/$1 \
-            $2 \
-            ${PHEN_DIR}/$3 \
-            $4 \
-            $5 \
-            $6 \
-            $7 \
-            $8 \
-            $9 \
-            ${10} \
-            ${p_value} \
-            ${11} \
-            ${12} \
-            ${pc_n} \
-            "odd" \
-            ${13} \
-            ${as}
+i=1
+while [ $i -le ${pc_n} ]
+do
+    COVS+=",X22009.0.${i}"
+    i=$(( $i + 1 ))
+done
 
-        #run even chromosome PRS
-          [ ! -f /scratch/osdominguez/prs_hairpin_outputs/even/${12}_prs_${as}${pc_n}pc_${p_value}pval.best ] && \
-          sbatch ${SCRIPT_PATH} \
-            ${BED_DIR}/ukb_imp_chr0E_v3_whitebrit_unrelated_QC \
-            ${SUM_DIR}/$1 \
-            $2 \
-            ${PHEN_DIR}/$3 \
-            $4 \
-            $5 \
-            $6 \
-            $7 \
-            $8 \
-            $9 \
-            ${10} \
-            ${p_value} \
-            ${11} \
-            ${12} \
-            ${pc_n} \
-            "even" \
-            ${13} \
-            ${as} 
-        
-        #run all chromosome PRS
-          [ ! -f /scratch/osdominguez/prs_hairpin_outputs/all/${12}_prs_${as}${pc_n}pc_${p_value}pval.best ] && \
-          sbatch ${SCRIPT_PATH} \
-            ${BED_DIR}/ukb_imp_chr0E_v3_whitebrit_unrelated_QC \
-            ${SUM_DIR}/$1 \
-            $2 \
-            ${PHEN_DIR}/$3 \
-            $4 \
-            $5 \
-            $6 \
-            $7 \
-            $8 \
-            $9 \
-            ${10} \
-            ${p_value} \
-            ${11} \
-            ${12} \
-            ${pc_n} \
-            "all" \
-            ${13} \
-            ${as}
+echo ${#parms[@]}
 
-      done
+#really low p-values go fast so 12 hours. Be careful for some summary stats as they filter out some snps, we want ALL snps since that's what hairpin wants.
+Rscript /gpfs/data/ukb-share/dahl/ophelia/PRSice.R \
+    --prsice /gpfs/data/ukb-share/dahl/ophelia/PRSice_linux \
+    --base ${SUM_DIR}/${sum} \
+    --target ${BED_DIR}/${bfile} \
+    --binary-target ${binary} \
+    --pheno ${PHENO_DIR}/${ppath}  \
+    --cov ${COV_FILE} \
+    --cov-col ${COVS} \
+    --clump-p 1 \
+    --clump-r2 0.1 \
+    --clump-kb 250 \
+    --stat ${scol} \
+    --snp ${id} \
+    --chr ${chr} \
+    --bp ${bp} \
+    --A1 ${a1} \
+    --A2 ${a2} \
+    --pvalue ${pcol} \
+    --fastscore \
+    --bar-levels ${p_value} \
+    --no-full \
+    --base-info INFO:0.8 \
+    --base-maf ${maf} \
+    --"${stat}" \
+    --out ${OUT_DIR}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval
 
-    done
-
-  done
-
-}
-
-#function_call	sumstat_file_name is_binary pheno_file_path (relative to extracted phehnotypes) stat_column_name snpID_column_name   chr_col_name   bp_col_name   A1_col   A2_col   p_val_col   stat   pheno_name   mafname_mafscore  
-
-sub_phenotype GIANT_HEIGHT_new_R.csv F Height/Height674178.pheno BETA RSID CHR POS EFFECT_ALLELE OTHER_ALLELLE P beta height EFFECT_ALLELE_FREQ:0.05
-
-sub_phenotype SNP_gwas_mc_merge_nogc.tbl.uniq F BMI/BMI674178.pheno b SNP not_avail not_avail A1 A2 p beta BMI Freq1.Hapmap:0.05 
-
-sub_phenotype jointGwasMc_LDL.txt F LDL/LDL674178.pheno beta rsid not_avail not_avail A1 A2 P-value beta LDL Freq.A1.1000G.EUR:0.05
-
-sub_phenotype GIANT_2015_WHRadjBMI_COMBINED_EUR.txt F WHRadjBMI/WHRadjBMI.pheno b MarkerName not_vail not_vail Allele1 Allele2 p beta WHRadjBMI FreqAllele1HapMapCEU:0.05
-
-sub_phenotype EA4_additive_excl_23andMe.txt F EA4/EA4.pheno Beta rsID Chr not_avail Effect_allele Other_allele P beta EA4 EAF_HRC:0.05
-
-sub_phenotype EA4_additive_excl_23andMe.txt F EA3/EA3.pheno Beta rsID Chr not_avail Effect_allele Other_allele P beta EA3 EAF_HRC:0.05
+chgrp cri-ukb_share ${OUT_DIR}/${dir}/*
+chmod g+rx ${OUT_DIR}/${dir}/*

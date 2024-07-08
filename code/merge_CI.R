@@ -15,11 +15,11 @@ boot_n <- as.numeric(args[4])
 
 for (as in c("as", "noas")) {
   out_dir <- "/gpfs/data/ukb-share/dahl/ophelia/hairpin/plotting/"
-
+  tmp_dir <- "/scratch/osdominguez/temp_boot/"
   boot_df <- data.frame(matrix(ncol=6, nrow=0, dimnames=list(NULL, c("phenotype", "threshold", "pc_num", "r2", "theta_eo", "replicate")))) 
 
   for (i in 1:boot_n) {
-    boot_i <- read.table(file = paste0(out_dir, "temp/", phen_name, "_", as, "_bootstrap_", boot_n, ".table"), header = TRUE)
+    boot_i <- read.table(file = paste0(tmp_dir, phen_name, "_", as, "_bootstrap_", boot_n, ".table"), header = TRUE)
     
     boot_df <- rbind(boot_df, boot_i)
   }
