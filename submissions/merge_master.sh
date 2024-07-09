@@ -3,8 +3,8 @@
 #SBATCH --job-name=Hairpin_merge
 #SBATCH --time=12:00:00
 #SBATCH --mem=75gb
-#SBATCH --output=/home/osdominguez/output/hairpin_PGS/linearity_%a_%A.out
-#SBATCH --error=/home/osdominguez/output/hairpin_PGS/linearity_%a_%A.err
+#SBATCH --output=/home/osdominguez/output/hairpin_PGS/merge_%a_%A.out
+#SBATCH --error=/home/osdominguez/output/hairpin_PGS/merge_%a_%A.err
 #SBATCH --array=1-6%1
 
 module load gcc/12.1.0
@@ -40,3 +40,4 @@ case ${SLURM_ARRAY_TASK_ID}} in
   *)
     echo -n "unknown"
     ;;
+esac
