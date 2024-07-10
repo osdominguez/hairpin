@@ -19,10 +19,13 @@ table_dir <- "/gpfs/data/ukb-share/dahl/ophelia/hairpin/plotting/"
 
 hairpin_df <- read.table(paste0(table_dir, phen_name, "_", as, "_base.table"), header = TRUE)
 boot_df <- read.table(paste0(table_dir, phen_name, "_", as, "_bootstrap.table"), header = TRUE)
-cof_df <- read.table(paste0(table_dir, phen_name, "_", as, "_cofint.table"), header = TRUE)
+cof_df <- read.table(paste0(table_dir, phen_name, "_", as, "_confint.table"), header = TRUE)
 
 hairpin_df <- hairpin_df %>% filter(pc_num == pc_n & phenotype == phen_name)
 boot_df <- boot_df %>% filter(pc_num == pc_n & phenotype == phen_name)
+
+hairpin_df <- na.omit(hairpin_df)
+boot_df <- na.omit(boot_df)
 
 hairpin_df <- hairpin_df[order(hairpin_df$threshold), ]
 
@@ -39,14 +42,13 @@ get_epsilon <- function(full_boot, boot_n, phen){
     boot_rep <- full_boot %>% filter(replicate == i)
     # ask about why we're doing this here...
     # is it the GLS assumption? Or like we really don't want to use the small values because the whole purpose of GLS is to figure out which ones (of the small values) are bad? 
-    best_p <- subset(boot_rep, threshold <= 1e-13 & threshold >= 1e-18)
     
     # run the gls linear model for that hairpin
-    lin_mod <- lm(formula=theta_eo~0 + r2, data = best_p)
+    lin_mod <- lm(formula=theta_eo~0 + r2, data = boot_rep)
     
     # create empty dataframe to store results for that bootstrap replicate
     rep_resid <- data.frame(matrix(ncol=2, nrow=0, dimnames=list(NULL, c("threshold", paste0("residuals_",i) ))))
-
+    
     # finding residuals for each threshold
     for (pval in uniq_p) {    
       
@@ -73,37 +75,40 @@ get_epsilon <- function(full_boot, boot_n, phen){
   } 
   # make episilon go from least to greatest by threshold 
   eps_df <- eps_df[order(eps_df$threshold), ]
-
+  
   # make column names the thresholds
-
+  
   # return the epsilon dataframe
+  
+  eps_df <- na.omit(eps_df)
+  
   return(eps_df)
 }
 
-get_beta <- function(eps, hairpin) {
-  
+get_omega <- function(eps) {
   eps <- t(eps)
   colnames(eps) <- eps[1, ]
   eps <- eps[-1, ]
-
   
   omega <- cov(eps)
-
+  
   # To make sure the matrix has nrow(omega) linearly independent bases
   omega <- omega + diag(1e-12, nrow(omega))
+  
+  return(omega)
+}
 
-  thresholds_to_keep <- as.list(hairpin$threshold) 
-  omega <- omega[rownames(omega) %in% thresholds_to_keep, colnames(omega) %in% thresholds_to_keep]
-
+get_beta <- function(omega, hairpin) {
+  
   X <- as.vector(hairpin$r2)
   Y <- as.vector(hairpin$theta_eo)
-
+  
   beta <- solve(t(X)%*%solve(omega)%*%X)%*%t(X)%*%solve(omega)%*%Y
-
+  
 }
 
 # function that finds z score and pvalue for each threshold in the dataframe
-get_zvals <- function(full_bootstrap_ols,full_bootstrap_gls, pheno, epsilon_df){
+get_zvals <- function(full_bootstrap_ols,full_bootstrap_gls, pheno, omega) {
   
   ##### Setting up the function ####
   
@@ -121,8 +126,8 @@ get_zvals <- function(full_bootstrap_ols,full_bootstrap_gls, pheno, epsilon_df){
     # filter down to the specific hairpin bootstrap replicate
     boot_replicate_gls <- full_bootstrap_gls %>% filter(replicate == i) 
     
-    beta <- get_beta(epsilon_df, boot_replicate_gls)
-  
+    beta <- get_beta(omega, boot_replicate_gls)
+    
     # for each threshold find the distance 
     for (pval in thresholds) {
       
@@ -160,7 +165,7 @@ get_zvals <- function(full_bootstrap_ols,full_bootstrap_gls, pheno, epsilon_df){
                               !is.na(y) & !is.na(line_y) & (y <= line_y) ~ "below",
                               !is.na(y) & !is.na(line_y) & (y > line_y) ~ "above"
                             ),
-                            pc_num = pc,
+                            pc_num = pc_n,
                             replicate = i, 
                             phenotype = pheno) 
       
@@ -184,7 +189,7 @@ get_zvals <- function(full_bootstrap_ols,full_bootstrap_gls, pheno, epsilon_df){
              p_value <= 0.05 ~ "off",
              p_value > 0.05 ~ "on"
            ), 
-           pc_num = pc, 
+           pc_num = pc_n, 
            phenotype = pheno) 
   
   df_list <- list(distances_df, z_table)
@@ -193,26 +198,28 @@ get_zvals <- function(full_bootstrap_ols,full_bootstrap_gls, pheno, epsilon_df){
   
 }
 
-epsilon <- get_residuals(full_boot, boot_num, pheno)
+epsilon <- get_epsilon(boot_df, boot_num, phen_name)
 
-beta <- get_beta(epsilon, hairpin_df)
+omega <- get_omega(epsilon)
 
-test <- get_zvals(boot_df, boot_df, pheno, pc)
+beta <- get_beta(omega, hairpin_df)
+
+test <- get_zvals(boot_df, boot_df, phen_name, omega)
 
 ztable <- test[[2]] 
 
 full_df <- merge(hairpin_df, ztable, by = c("threshold", "pc_num"))
 
-write.table(ztable, file = paste0("/gpfs/data/ukb-share/dahl/ophelia/hairpin/plotting/linearity/hairpin_", pheno, pc, "_", as, "_", "gls.png"), row.names = F, quote = F)
+write.table(ztable, file = paste0("/gpfs/data/ukb-share/dahl/ophelia/hairpin/plotting/linearity/hairpin_", phen_name, pc_n, "_", as, "_", "gls.table"), row.names = F, quote = F)
 
 plot <- ggplot(full_df, aes(x=r2, y=theta_eo, colour = on_line, label = threshold)) + 
   geom_line(colour = "black") +
   geom_point() +
   geom_text(hjust = 1, vjust = 0) +
   theme_bw()  +
-  labs(title = paste0("Hairpin ", pheno, " plot ", pc, " PC (gls)"), y = "theta even/odd", x = "R2")  +
+  labs(title = paste0("Hairpin ", phen_name, " plot ", pc_n, " PC (gls)"), y = "theta even/odd", x = "R2")  +
   scale_color_manual(values = c("on" = "black", "off" = "red")) + 
   geom_abline(intercept = 0, slope = beta, color = "blue", linewidth = .5)
 
 
-ggsave(filename = paste0("/gpfs/data/ukb-share/dahl/ophelia/hairpin/plots/hairpin_", pheno, pc, "_", as, "_", "gls.png"), plot = plot, width = 6, height = 4)
+ggsave(filename = paste0("/gpfs/data/ukb-share/dahl/ophelia/hairpin/plotting/plots/hairpin_", phen_name, pc_n, "_", as, "_", "gls.png"), plot = plot, width = 6, height = 4)
