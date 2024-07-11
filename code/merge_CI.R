@@ -24,7 +24,7 @@ for (as in c("as", "noas")) {
     boot_df <- rbind(boot_df, boot_i)
   }
 
-  write.table(boot_df,  file = paste0(out_dir, phen_name, "_", as, "_bootstrap.table"), row.names = F, quote = F)  
+  write.table(boot_df,  file = paste0(out_dir, phen_name, "_", as, "_bootstrap.table"), row.names = F, quote = F) 
 
   confint_table <- boot_df %>% 
     group_by(phenotype, pc_num, threshold) %>% 

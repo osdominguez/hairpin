@@ -219,7 +219,6 @@ plot <- ggplot(full_df, aes(x=r2, y=theta_eo, colour = on_line, label = threshol
   theme_bw()  +
   labs(title = paste0("Hairpin ", phen_name, " plot ", pc_n, " PC (gls)"), y = "theta even/odd", x = "R2")  +
   scale_color_manual(values = c("on" = "black", "off" = "red")) + 
-  geom_abline(intercept = 0, slope = beta, color = "blue", linewidth = .5)
-
+  geom_abline(intercept = 0, slope = beta, color = "blue", linewidth = .5) + xlim(0, NA) + ylim(0, NA)
 
 ggsave(filename = paste0("/gpfs/data/ukb-share/dahl/ophelia/hairpin/plotting/plots/hairpin_", phen_name, pc_n, "_", as, "_", "gls.png"), plot = plot, width = 6, height = 4)

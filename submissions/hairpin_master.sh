@@ -5,7 +5,7 @@
 #SBATCH --mem=20gb
 #SBATCH --output=/home/osdominguez/output/hairpin_analysis/hairpin_sub_%a_%A.out
 #SBATCH --error=/home/osdominguez/output/hairpin_analysis/hairpin_sub_%a_%A.err
-#SBATCH --array=1-1212%101
+#SBATCH --array=1-1414%101
 
 TXT_PATH=/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/hairpin.txt
 CODE="/gpfs/data/ukb-share/dahl/ophelia/hairpin/code/hairpin.R"
