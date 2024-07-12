@@ -9,7 +9,7 @@
 
 TXT_PATH=/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/combinations.txt
 
-[[ ( ${SLURM_ARRAY_TASK_ID} -gt $(awk 'END{print NR}' ${TXT_PATH}) ) ]] && { echo "slurm ID greater"; exit 1; }
+[[ ( ${SLURM_ARRAY_TASK_ID} -gt $(awk 'END{print NR}' ${TXT_PATH}) ) ]] && { echo "slurm ID greater"; exit 0; }
 
 module load gcc/12.1.0
 module load R/4.3.1
@@ -45,9 +45,9 @@ bfile=${parms[17]}
 [[ ! /scratch/osdominguez/prs_hairpin_outputs/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval.best ]] && { exit 1; }
 
 if [[ ${as} == "as_" ]]; then
-    COVS=FID,IID,X31.0.0,X21003.0.0,X54.0.0,X22000-0.0,age2
+    COVS=FID,IID,X31.0.0,X21003.0.0,X54.0.0,X22000.0.0,age2
 else
-    COVS=FID,IID,X31.0.0,X21003.0.0,X22000-0.0,age2
+    COVS=FID,IID,X31.0.0,X21003.0.0,X22000.0.0,age2
 fi
 
 i=1

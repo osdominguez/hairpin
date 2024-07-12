@@ -4,4 +4,4 @@
 /gpfs/data/ukb-share/extracted_phenotypes/WHRadjBMI/WHRadjBMI.pheno WHRadjBMI WHRadjBMI
 /gpfs/data/ukb-share/extracted_phenotypes/EA3/EA3.pheno EA3 EA3
 /gpfs/data/ukb-share/extracted_phenotypes/EA4/EA4.pheno EA4 EA4
-/gpfs/data/ukb-share/extracted_phenotypes/days_phys/days_phys.pheno days_phys X884.0.0
+/gpfs/data/ukb-share/extracted_phenotypes/days_phys/days_phys.pheno days_phys X884.0.0n

@@ -72,12 +72,14 @@ bootstrap_hairpin <- function(boot_num, pheno_filename, pheno_name, pheno_id, as
 # this function generates the necessary column names for a specific number of pcs
 # R doesn't like the "-" in some of the headers so it changes them to "."
 pc_header <- function(n_pcs) {
-  cols <- c("FID", "IID", "X31.0.0", "X34.0.0", "X54.0.0", "age2")
-  if(n_pcs <= 0) {
-    return(cols)
+  cols <- c("FID", "IID", "X31.0.0", "X21003.0.0", "X22000.0.0", "age2")
+  if (as == "as") {
+    cols <- c(cols, "X54.0.0")
   }
-  for (i in 1:n_pcs) {
-    cols <- append(cols, paste0("X22009.0.", i))
+  if(n_pcs > 0) {
+    for (i in 1:n_pcs) {
+      cols <- append(cols, paste0("X22009.0.", i))
+    }
   }
   return(cols)
 }

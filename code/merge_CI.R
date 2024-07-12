@@ -12,7 +12,6 @@ phen_name <- toString(args[2])
 phen_id <- toString(args[3])
 boot_n <- as.numeric(args[4])
 
-
 for (as in c("as", "noas")) {
   out_dir <- "/gpfs/data/ukb-share/dahl/ophelia/hairpin/plotting/"
   tmp_dir <- "/scratch/osdominguez/temp_boot/"

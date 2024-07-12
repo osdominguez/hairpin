@@ -50,5 +50,6 @@ case ${SLURM_ARRAY_TASK_ID} in
     
   *)
     echo -n "unknown"
+    exit 0
     ;;
 esac
