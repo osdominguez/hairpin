@@ -6,38 +6,16 @@
 #SBATCH --output=/home/osdominguez/output/formatting/reformat_%a_%A.out
 #SBATCH --error=/home/osdominguez/output/format/reformat_%A.err
 
+txt_dir=/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files
+sub_dir=/gpfs/data/ukb-share/dahl/ophelia/hairpin/submissions
+
 phen_name=${1}
 phen_path=${2}
 phen_id=${3}
 
 reform_merge () {
     
-    input_file=/gpfs/data/ukb-share/dahl/ophelia/hairpin/workflow_test/workflow.sh
-
-    # Search for the line containing "#SBATCH --array=1-<number>%1"
-    line=$(grep "#SBATCH --array=1-[0-9]%1" "$input_file")
-
-    if [[ -n "$line" ]]; then
-        # Extract the number after the dash
-        number=$(echo "$line" | grep -oP '(?<=1-)[0-9]+')
-
-        if [[ -n "$number" ]]; then
-            # Increment the number
-            new_number=$((number + 1))
-
-            # Replace the old number with the new number in the line
-            new_line=$(echo "$line" | sed "s/1-$number%1/1-$new_number%1/")
-
-            # Replace the line in the file
-            sed -i "s|$line|$new_line|g" "$input_file"
-
-            echo "Number replaced successfully."
-        else
-            echo "Error: Number extraction failed."
-        fi
-    else
-        echo "Error: Line not found in the input file."
-    fi
+    input_file=/gpfs/data/ukb-share/dahl/ophelia/hairpin/submissions/merge_master.sh
 
     pattern='*)'  # Pattern to match '*)' with optional leading whitespace
 
@@ -73,3 +51,40 @@ reform_merge () {
 }
 
 
+reform_array() {
+
+    input_file=${1}
+    output_file=${2}
+    max_array=${3}
+
+    # Check if the input file exists
+    if [ ! -f "$input_file" ]; then
+        echo "Error: Input file '$input_file' not found."
+        exit 1
+    fi
+
+    # Count the number of lines in the file
+    num_lines=$(wc -l < "$input_file")
+
+    # Determine the value for n_row (number of rows)
+    n_row=$num_lines
+
+    # Construct the new line with n_row
+    new_line="#SBATCH --array=1-${n_row}%${max_array}"
+
+    # Check if the file has at least 8 lines
+    if [ "$num_lines" -lt 8 ]; then
+        echo "Error: Output file has less than 8 lines."
+        exit 1
+    fi
+
+    # Replace the 8th line with the new line
+    sed -i '8s/.*/'"$new_line"'/' "$output_file"
+
+    echo "Line 8 replaced successfully with n_row = $n_row."
+}
+
+reform_merge
+reform_array "${txt_dir}/combinations.txt" "{sub_dir}/hairpin_PGS_master.sh" 300
+reform_array "${txt_dir}/hairpin.txt" "{sub_dir}/hairpin_master.sh" 101
+reform_array "${txt_dir}/phens.txt" "{sub_dir}/merge_master.sh" 1

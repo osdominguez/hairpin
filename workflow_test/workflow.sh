@@ -63,25 +63,27 @@ if [[ ${new} ]]; then
     pinfo_2="${sum_file} ${binary} {phen_rel_path} ${stat_col} ${ID_col} ${chr_col} ${bp_col} ${a1} ${a2} ${pcol} ${stat} ${phen_name} ${maf}"
 
     # Add new run specs
-    printf \n${pinfo_1} >> ${txt_dir}/hairpin_phens.txt
-    printf \n${phen_name} >> ${txt_dir}/phens.txt
-    printf \n${pinfo_2} >> ${txt_dir}/PGSphens.txt
+    printf "\n${pinfo_1}" >> ${txt_dir}/hairpin_phens.txt
+    printf "\n${phen_name}" >> ${txt_dir}/phens.txt
+    printf "\n${pinfo_2}" >> ${txt_dir}/PGSphens.txt
     printf '\nsbatch ${SCRIPT_PATH}'" \"${phen_name}\" " >> ${sh_dir}/tables_master.sh
+    
+    echo "formatting txt files..."
+    #Format the txt files
+    rm ${txt_dir}/combinations.txt
+    sbatch --wait ${txt_dir}/format_PGS_txt.sh
+    rm ${txt_dir}/hairpin.txt
+    sbatch --wait ${txt_dir}/format_hairpin_txt.sh
+    rm ${txt_dir}/linearity.txt
+    sbatch --wait ${txt_dir}/format_linearity_txt.sh
+    echo "successfully formatted txt files"
+    echo "formatting scripts..."
+    sbatch --wait /gpfs/data/ukb-share/dahl/ophelia/hairpin/submissions/reformat_scripts.sh ${phen_name} ${phen_path} ${phen_id}
+    echo "successfully formatted scripts"
     # For different bed files, ignore for now
     #echo new_bed_info >> ${txt_dir}/sep.txt
     echo "succesfully added phenotype"
 fi
-
-echo "formatting txt files..."
-#Format the txt files
-rm ${txt_dir}/combinations.txt
-sbatch --wait ${txt_dir}/format_PGS_txt.sh
-rm ${txt_dir}/hairpin.txt
-sbatch --wait ${txt_dir}/format_hairpin_txt.sh
-rm ${txt_dir}/linearity.txt
-sbatch --wait ${txt_dir}/format_linearity_txt.sh
-echo "successfully formatted"
-
 
 # Run hairpin workflow
 echo "running hairpin PGS..."
