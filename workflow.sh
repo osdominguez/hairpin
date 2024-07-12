@@ -17,6 +17,8 @@ sum_dir=/gpfs/data/ukb-share/dahl/ophelia/hairpin/sum_stats
 
 #sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/workflow_test/workflow.sh 1 days_phys X884.0.0 /gpfs/data/ukb-share/extracted_phenotypes/days_phys/days_phys.pheno ACTIVITY1_single_p5e-8_sumstats.txt F days_phys/days_phys.pheno BETA SNPID CHR BP EFFECT_ALLELE OTHER_ALLELE PVALUE beta EAF:0.05
 
+#sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/workflow_test/workflow.sh 1 T2D X2443.0.0 /gpfs/data/ukb-share/extracted_phenotypes/T2D/T2D.pheno EUR_Metal_LDSC-CORR_Neff.v2.txt T T2D/T2D.pheno Beta not_avail Chromosome Position EffectAllele NonEffectAllele Pval beta EAF:0.05
+
 new=${1}
 if [[ ${new} ]]; then
     #Things we need with variable assignments:
