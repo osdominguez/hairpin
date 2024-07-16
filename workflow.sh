@@ -14,13 +14,9 @@ sum_dir=/gpfs/data/ukb-share/dahl/ophelia/hairpin/sum_stats
     # we ahve this with the one file having prefix, bedfile name, and the other stuff right?
     # Also REALLY need to have checks for files existing in this
 
-
-#sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/workflow_test/workflow.sh 1 days_phys X884.0.0 /gpfs/data/ukb-share/extracted_phenotypes/days_phys/days_phys.pheno ACTIVITY1_single_p5e-8_sumstats.txt F days_phys/days_phys.pheno BETA SNPID CHR BP EFFECT_ALLELE OTHER_ALLELE PVALUE beta EAF:0.05
-
-#sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/workflow_test/workflow.sh 1 T2D X2443.0.0 /gpfs/data/ukb-share/extracted_phenotypes/T2D/T2D.pheno EUR_Metal_LDSC-CORR_Neff.v2.txt T T2D/T2D.pheno Beta not_avail Chromosome Position EffectAllele NonEffectAllele Pval beta EAF:0.05
-
 new=${1}
-if [[ ${new} ]]; then
+
+if [[ ${new} == 1 ]]; then
     #Things we need with variable assignments:
     #new=0 # run with new phen/file?
     
@@ -79,7 +75,7 @@ if [[ ${new} ]]; then
     rm ${txt_dir}/linearity.txt
     sbatch --wait ${txt_dir}/format_linearity_txt.sh
     echo "successfully formatted txt files"
-    echo "formatting scripts..."
+    echo "reformatting scripts..."
     sbatch --wait /gpfs/data/ukb-share/dahl/ophelia/hairpin/submissions/reformat_scripts.sh ${phen_name} ${phen_path} ${phen_id}
     echo "successfully formatted scripts"
     # For different bed files, ignore for now

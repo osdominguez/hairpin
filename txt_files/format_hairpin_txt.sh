@@ -3,8 +3,8 @@
 #SBATCH --job-name=format_hairpin_txt
 #SBATCH --time=01:00:00
 #SBATCH --mem=5gb
-#SBATCH --output=/home/osdominguez/output/format_HAIRPIN_txt_%a_%A.out
-#SBATCH --error=/home/osdominguez/output/format_HAIRPIN_txt_%a_%A.err
+#SBATCH --output=/home/osdominguez/output/formatting/format_HAIRPIN_txt_%a_%A.out
+#SBATCH --error=/home/osdominguez/output/formatting/format_HAIRPIN_txt_%a_%A.err
 
 cd "/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files"
 

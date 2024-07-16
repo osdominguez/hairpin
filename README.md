@@ -1,16 +1,16 @@
 # Hairpin
 ## Misc scripts/tools for working with UKB csv files
-- [Running Hairpin](#Usage-for-PGS-analysis)
+- [Running Hairpin](#usage-for-hairpin-analysis)
   * [Command Line Arguments](#command-line-arguments)
   * [Sample Calls](#sample-calls)
   * [Possible Errors](#possible-errors)
-- [PGS Specifications]($PGS-specs)
+- [PGS Specifications](#pgs-specs)
 - [Plotting](#plotting)
 - [References](#references)
 
 Code here written by Ophelia Dominguez, Shevaughn Holness, Andy Dahl, with help from Renée Fonseca and Manuela Costantino.
 
-### Usage for PGS analysis
+### Usage for Hairpin analysis
 TODO: an actual description of this lol.
 #### Command Line Arguments
 To intialize hairpin with a new phenotype, run `workflow.sh` with the following positional arguments: 

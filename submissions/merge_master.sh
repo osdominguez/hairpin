@@ -5,7 +5,7 @@
 #SBATCH --mem=75gb
 #SBATCH --output=/home/osdominguez/output/hairpin_PGS/merge_%a_%A.out
 #SBATCH --error=/home/osdominguez/output/hairpin_PGS/merge_%a_%A.err
-#SBATCH --array=1-7%1
+#SBATCH --array=1-8%1
 
 module load gcc/12.1.0
 module load R/4.3.1
@@ -47,7 +47,12 @@ case ${SLURM_ARRAY_TASK_ID} in
     echo "days_phys"
     Rscript ${CODE} /gpfs/data/ukb-share/extracted_phenotypes/days_phys/days_phys.pheno days_phys X884.0.0 100
     ;;
-    
+
+  8)
+    echo "T2D"
+    Rscript ${CODE} /gpfs/data/ukb-share/extracted_phenotypes/T2D/T2D.pheno T2D X2443.0.0
+    ;;
+
   *)
     echo -n "unknown"
     exit 0
