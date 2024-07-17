@@ -17,26 +17,6 @@ sum_dir=/gpfs/data/ukb-share/dahl/ophelia/hairpin/sum_stats
 new=${1}
 
 if [[ ${new} == 1 ]]; then
-    #Things we need with variable assignments:
-    #new=0 # run with new phen/file?
-    
-    # example run for adding days_phys:
-    # sbatch workflow.sh 1 \
-    #    days_phys \
-    #    X884.0.0 \
-    #    /gpfs/data/ukb-share/extracted_phenotypes/days_phys/days_phys.pheno \
-    #    ACTIVITY1_single_p5e-8_sumstats.txt \
-    #    F \
-    #    days_phys/days_phys.pheno  \
-    #    BETA \
-    #    SNPID \
-    #    CHR \
-    #    BP \
-    #    EFFECT_ALLELE \
-    #    OTHER_ALLELE \
-    #    PVALUE \
-    #    beta \
-    #    EAF:0.05
   
     # put not_avail if the column is not available
     phen_name=${2} # phen name
@@ -58,7 +38,7 @@ if [[ ${new} == 1 ]]; then
     echo "adding new phenotype to hairpin workflow: ${phen_name}..."
 
     pinfo_1="${phen_path} ${phen_name} ${phen_id}"
-    pinfo_2="${sum_file} ${binary} {phen_rel_path} ${stat_col} ${ID_col} ${chr_col} ${bp_col} ${a1} ${a2} ${pcol} ${stat} ${phen_name} ${maf}"
+    pinfo_2="${sum_file} ${binary} ${phen_rel_path} ${stat_col} ${ID_col} ${chr_col} ${bp_col} ${a1} ${a2} ${pcol} ${stat} ${phen_name} ${maf}"
 
     # Add new run specs
     printf "\n${pinfo_1}" >> ${txt_dir}/hairpin_phens.txt

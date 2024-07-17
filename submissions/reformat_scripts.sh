@@ -34,7 +34,7 @@ reform_merge () {
             # Construct the new line to add
             new_line="\  ${new_number})"
             new_line+="\n    echo \"${phen_name}"\"
-            new_line+="\n    Rscript \${CODE} ${phen_path} ${phen_name} ${phen_id}"
+            new_line+="\n    Rscript \${CODE} ${phen_path} ${phen_name} ${phen_id} 100"
             new_line+="\n    ;;\n"
 
             # Insert the new line into the script file

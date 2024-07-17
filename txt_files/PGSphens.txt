@@ -5,4 +5,4 @@ GIANT_2015_WHRadjBMI_COMBINED_EUR.txt F WHRadjBMI/WHRadjBMI.pheno b MarkerName n
 EA4_additive_excl_23andMe.txt F EA4/EA4.pheno Beta rsID Chr not_avail Effect_allele Other_allele P beta EA4 EAF_HRC:0.05
 EA4_additive_excl_23andMe.txt F EA3/EA3.pheno Beta rsID Chr not_avail Effect_allele Other_allele P beta EA3 EAF_HRC:0.05
 ACTIVITY1_single_p5e-8_sumstats.txt F days_phys/days_phys.pheno BETA SNPID CHR BP EFFECT_ALLELE OTHER_ALLELE PVALUE beta days_phys EAF:0.05
-EUR_Metal_LDSC-CORR_Neff.v2.txt T {phen_rel_path} Beta not_avail Chromosome Position EffectAllele NonEffectAllele Pval beta T2D EAF:0.05
+EUR_Metal_LDSC-CORR_Neff.v2.txt T T2D/T2D.pheno Beta not_avail Chromsome Position EffectAllele NonEffectAllele Pval beta T2D EAF:0.05

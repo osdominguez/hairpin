@@ -50,7 +50,7 @@ case ${SLURM_ARRAY_TASK_ID} in
 
   8)
     echo "T2D"
-    Rscript ${CODE} /gpfs/data/ukb-share/extracted_phenotypes/T2D/T2D.pheno T2D X2443.0.0
+    Rscript ${CODE} /gpfs/data/ukb-share/extracted_phenotypes/T2D/T2D.pheno T2D X2443.0.0 100
     ;;
 
   *)
