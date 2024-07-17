@@ -1,0 +1,8 @@
+height
+BMI
+LDL
+WHRadjBMI
+EA4
+EA3
+days_phys
+T2D

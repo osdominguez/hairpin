@@ -1,0 +1,10 @@
+# ignore summary statistics and output files
+sum_stats/
+plotting/
+old/
+plots/
+
+# ignore the generated txt files
+txt_files/combinations.txt
+txt_files/linearity.txt
+txt_files/hairpin.txt

@@ -1,0 +1,8 @@
+/gpfs/data/ukb-share/extracted_phenotypes/Height/Height674178.pheno height X50
+/gpfs/data/ukb-share/extracted_phenotypes/BMI/BMI674178.pheno BMI X21001
+/gpfs/data/ukb-share/extracted_phenotypes/LDL/LDL674178.pheno LDL X30780
+/gpfs/data/ukb-share/extracted_phenotypes/WHRadjBMI/WHRadjBMI.pheno WHRadjBMI WHRadjBMI
+/gpfs/data/ukb-share/extracted_phenotypes/EA3/EA3.pheno EA3 EA3
+/gpfs/data/ukb-share/extracted_phenotypes/EA4/EA4.pheno EA4 EA4
+/gpfs/data/ukb-share/extracted_phenotypes/days_phys/days_phys.pheno days_phys X884.0.0
+/gpfs/data/ukb-share/extracted_phenotypes/T2D/T2D.pheno T2D X2443.0.0

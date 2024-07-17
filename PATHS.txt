@@ -1,0 +1,13 @@
+# Pheno dir:
+
+# SumStat dir:
+
+# PRSice.R file:
+
+# PRSice installation:
+
+# Hairpin dir (for everything in the hairpin folder):
+/gpfs/data/ukb-share/dahl/ophelia/hairpin
+
+# Temporary dir (for bootstraps? Might remove this):
+
