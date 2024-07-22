@@ -42,7 +42,8 @@ maf=${parms[15]}
 dir=${parms[16]}
 bfile=${parms[17]}
 
-[[ ! /scratch/osdominguez/prs_hairpin_outputs/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval.best ]] && { exit 1; }
+[[ -f /scratch/osdominguez/prs_hairpin_outputs/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval.best ]] && { exit 1; }
+grep -qE "${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval.best" /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/missing_pgs.txt && exit 1
 
 if [[ ${as} == "as_" ]]; then
     COVS=FID,IID,X31.0.0,X21003.0.0,X54.0.0,X22000.0.0,age2
@@ -62,6 +63,7 @@ echo ${#parms[@]}
 #really low p-values go fast so 12 hours. Be careful for some summary stats as they filter out some snps, we want ALL snps since that's what hairpin wants.
 Rscript /gpfs/data/ukb-share/dahl/ophelia/PRSice.R \
     --prsice /gpfs/data/ukb-share/dahl/ophelia/PRSice_linux \
+    --no-default \
     --base ${SUM_DIR}/${sum} \
     --target ${BED_DIR}/${bfile} \
     --binary-target ${binary} \
@@ -77,6 +79,7 @@ Rscript /gpfs/data/ukb-share/dahl/ophelia/PRSice.R \
     --bp ${bp} \
     --A1 ${a1} \
     --A2 ${a2} \
+    --chr-id c:l-ab \
     --pvalue ${pcol} \
     --fastscore \
     --bar-levels ${p_value} \
@@ -86,5 +89,10 @@ Rscript /gpfs/data/ukb-share/dahl/ophelia/PRSice.R \
     --"${stat}" \
     --out ${OUT_DIR}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval
 
-chgrp cri-ukb_share ${OUT_DIR}/${dir}/*
-chmod g+rx ${OUT_DIR}/${dir}/*
+chgrp cri-ukb_share ${OUT_DIR}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval*
+chmod g+rx ${OUT_DIR}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval*
+
+if [[ ! -f /scratch/osdominguez/prs_hairpin_outputs/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval.best ]]; then
+    echo "${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval.best" >> /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/missing_pgs.txt
+fi
+
