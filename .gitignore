@@ -1,5 +1,5 @@
 # ignore summary statistics and output files
-sum_stats/
+sum_stats/*
 plotting/
 old/
 plots/
@@ -9,3 +9,7 @@ txt_files/combinations.txt
 txt_files/linearity.txt
 txt_files/hairpin.txt
 txt_files/missing_pgs.txt
+
+# ignore sim outputs
+sims/Rdata/
+sims/Rout/

@@ -5,7 +5,7 @@
 #SBATCH --mem=10gb
 #SBATCH --output=/home/osdominguez/output/hairpin_PGS/hairpin_PGS_%a_%A.out
 #SBATCH --error=/home/osdominguez/output/hairpin_PGS/hairpin_PGS_%a_%A.err
-#SBATCH --array=1-16800%300
+#SBATCH --array=1-17760%300
 
 TXT_PATH=/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/combinations.txt
 

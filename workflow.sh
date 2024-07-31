@@ -6,9 +6,11 @@
 #SBATCH --output=/home/osdominguez/output/hairpin_full_%a_%A.out
 #SBATCH --error=/home/osdominguez/output/hairpin_full_%a_%A.err
 
-txt_dir=/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files
-sh_dir=/gpfs/data/ukb-share/dahl/ophelia/hairpin/submissions
-sum_dir=/gpfs/data/ukb-share/dahl/ophelia/hairpin/sum_stats
+hairpin_dir=/gpfs/data/ukb-share/dahl/ophelia/hairpin
+
+txt_dir=${hairpin_dir}/txt_files
+sh_dir=${hairpin_dir}/submissions
+sum_dir=${hairpin_dir}/sum_stats
 
 # need some way of specifying bed files
     # we ahve this with the one file having prefix, bedfile name, and the other stuff right?
@@ -56,7 +58,7 @@ if [[ ${new} == 1 ]]; then
     sbatch --wait ${txt_dir}/format_linearity_txt.sh
     echo "successfully formatted txt files"
     echo "reformatting scripts..."
-    sbatch --wait /gpfs/data/ukb-share/dahl/ophelia/hairpin/submissions/reformat_scripts.sh ${phen_name} ${phen_path} ${phen_id}
+    sbatch --wait ${sh_dir}/reformat_scripts.sh ${phen_name} ${phen_path} ${phen_id}
     echo "successfully formatted scripts"
     # For different bed files, ignore for now
     #echo new_bed_info >> ${txt_dir}/sep.txt

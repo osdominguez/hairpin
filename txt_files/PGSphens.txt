@@ -1,7 +1,7 @@
 GIANT_HEIGHT_new_R.csv F Height/Height674178.pheno BETA RSID CHR POS EFFECT_ALLELE OTHER_ALLELLE P beta height EFFECT_ALLELE_FREQ:0.05
 SNP_gwas_mc_merge_nogc.tbl.uniq F BMI/BMI674178.pheno b SNP not_avail not_avail A1 A2 p beta BMI Freq1.Hapmap:0.05
 jointGwasMc_LDL.txt F LDL/LDL674178.pheno beta rsid not_avail not_avail A1 A2 P-value beta LDL Freq.A1.1000G.EUR:0.05
-GIANT_2015_WHRadjBMI_COMBINED_EUR.txt F WHRadjBMI/WHRadjBMI.pheno b MarkerName not_vail not_vail Allele1 Allele2 p beta WHRadjBMI FreqAllele1HapMapCEU:0.05
+GIANT_2015_WHRadjBMI_COMBINED_EUR.txt F WHRadjBMI/WHRadjBMI_INT.pheno b MarkerName not_vail not_vail Allele1 Allele2 p beta WHRadjBMI FreqAllele1HapMapCEU:0.05
 EA4_additive_excl_23andMe.txt F EA4/EA4.pheno Beta rsID Chr not_avail Effect_allele Other_allele P beta EA4 EAF_HRC:0.05
 EA4_additive_excl_23andMe.txt F EA3/EA3.pheno Beta rsID Chr not_avail Effect_allele Other_allele P beta EA3 EAF_HRC:0.05
 ACTIVITY1_single_p5e-8_sumstats.txt F days_phys/days_phys.pheno BETA SNPID CHR BP EFFECT_ALLELE OTHER_ALLELE PVALUE beta days_phys EAF:0.05

@@ -32,7 +32,7 @@ calc_r2 <- function(covarpc_df, prs_df, pheno_df, pheno_id, pval) {
   null_mod <- lm(paste0(pheno_id," ~ . - all_",pval), data = full_df, na.action = na.omit) 
   null_r2 <- summary(null_mod)$r.squared
   
-  r2 <- full_r2 - null_r2
+  r2 <- (full_r2 - null_r2)/(1 - null_r2)
   
   return(r2)
 }

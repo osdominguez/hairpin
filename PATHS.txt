@@ -1,13 +1,15 @@
-# Pheno dir:
-
-# SumStat dir:
-
-# PRSice.R file:
-
-# PRSice installation:
-
 # Hairpin dir (for everything in the hairpin folder):
 /gpfs/data/ukb-share/dahl/ophelia/hairpin
+# Pheno dir:
+/gpfs/data/ukb-share/extracted_phenotypes
+# PRSice.R file:
+/gpfs/data/ukb-share/dahl/ophelia/PRSice.R
+# PRSice installation:
+/gpfs/data/ukb-share/dahl/ophelia/PRSice_linux
+# BED dir:
+/scratch/osdominguez/bgen_files/white_brit_unrelated
 
-# Temporary dir (for bootstraps? Might remove this):
-
+# SumStat dir:
+This will just be gotten from hairpin dir
+# Temporary dir inside the hairpin dir(for bootstraps? Might remove this):
+this can just be extracted from
