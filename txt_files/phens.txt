@@ -6,3 +6,5 @@ EA4
 EA3
 days_phys
 T2D
+height_on_EA4
+height_on_BMI

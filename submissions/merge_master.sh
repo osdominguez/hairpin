@@ -5,7 +5,7 @@
 #SBATCH --mem=75gb
 #SBATCH --output=/home/osdominguez/output/hairpin_PGS/merge_%a_%A.out
 #SBATCH --error=/home/osdominguez/output/hairpin_PGS/merge_%a_%A.err
-#SBATCH --array=1-8%1
+#SBATCH --array=1-10%1
 
 module load gcc/12.1.0
 module load R/4.3.1
@@ -51,6 +51,16 @@ case ${SLURM_ARRAY_TASK_ID} in
   8)
     echo "T2D"
     Rscript ${CODE} /gpfs/data/ukb-share/extracted_phenotypes/T2D/T2D.pheno T2D X2443.0.0 100
+    ;;
+
+  9)
+    echo "height_on_EA4"
+    Rscript ${CODE} /gpfs/data/ukb-share/extracted_phenotypes/EA4/EA4.pheno height_on_EA4 EA4 100
+    ;;
+
+  10)
+    echo "height_on_BMI"
+    Rscript ${CODE} /gpfs/data/ukb-share/extracted_phenotypes/BMI/BMI674178.pheno height_on_BMI X21001 100
     ;;
 
   *)

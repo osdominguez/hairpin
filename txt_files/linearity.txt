@@ -6,6 +6,8 @@ as 0 EA4
 as 0 EA3
 as 0 days_phys
 as 0 T2D
+as 0 height_on_EA4
+as 0 height_on_BMI
 as 1 height
 as 1 BMI
 as 1 LDL
@@ -14,6 +16,8 @@ as 1 EA4
 as 1 EA3
 as 1 days_phys
 as 1 T2D
+as 1 height_on_EA4
+as 1 height_on_BMI
 as 2 height
 as 2 BMI
 as 2 LDL
@@ -22,6 +26,8 @@ as 2 EA4
 as 2 EA3
 as 2 days_phys
 as 2 T2D
+as 2 height_on_EA4
+as 2 height_on_BMI
 as 3 height
 as 3 BMI
 as 3 LDL
@@ -30,6 +36,8 @@ as 3 EA4
 as 3 EA3
 as 3 days_phys
 as 3 T2D
+as 3 height_on_EA4
+as 3 height_on_BMI
 as 4 height
 as 4 BMI
 as 4 LDL
@@ -38,6 +46,8 @@ as 4 EA4
 as 4 EA3
 as 4 days_phys
 as 4 T2D
+as 4 height_on_EA4
+as 4 height_on_BMI
 as 5 height
 as 5 BMI
 as 5 LDL
@@ -46,6 +56,8 @@ as 5 EA4
 as 5 EA3
 as 5 days_phys
 as 5 T2D
+as 5 height_on_EA4
+as 5 height_on_BMI
 as 10 height
 as 10 BMI
 as 10 LDL
@@ -54,6 +66,8 @@ as 10 EA4
 as 10 EA3
 as 10 days_phys
 as 10 T2D
+as 10 height_on_EA4
+as 10 height_on_BMI
 as 20 height
 as 20 BMI
 as 20 LDL
@@ -62,6 +76,8 @@ as 20 EA4
 as 20 EA3
 as 20 days_phys
 as 20 T2D
+as 20 height_on_EA4
+as 20 height_on_BMI
 as 30 height
 as 30 BMI
 as 30 LDL
@@ -70,6 +86,8 @@ as 30 EA4
 as 30 EA3
 as 30 days_phys
 as 30 T2D
+as 30 height_on_EA4
+as 30 height_on_BMI
 as 40 height
 as 40 BMI
 as 40 LDL
@@ -78,6 +96,8 @@ as 40 EA4
 as 40 EA3
 as 40 days_phys
 as 40 T2D
+as 40 height_on_EA4
+as 40 height_on_BMI
 noas 0 height
 noas 0 BMI
 noas 0 LDL
@@ -86,6 +106,8 @@ noas 0 EA4
 noas 0 EA3
 noas 0 days_phys
 noas 0 T2D
+noas 0 height_on_EA4
+noas 0 height_on_BMI
 noas 1 height
 noas 1 BMI
 noas 1 LDL
@@ -94,6 +116,8 @@ noas 1 EA4
 noas 1 EA3
 noas 1 days_phys
 noas 1 T2D
+noas 1 height_on_EA4
+noas 1 height_on_BMI
 noas 2 height
 noas 2 BMI
 noas 2 LDL
@@ -102,6 +126,8 @@ noas 2 EA4
 noas 2 EA3
 noas 2 days_phys
 noas 2 T2D
+noas 2 height_on_EA4
+noas 2 height_on_BMI
 noas 3 height
 noas 3 BMI
 noas 3 LDL
@@ -110,6 +136,8 @@ noas 3 EA4
 noas 3 EA3
 noas 3 days_phys
 noas 3 T2D
+noas 3 height_on_EA4
+noas 3 height_on_BMI
 noas 4 height
 noas 4 BMI
 noas 4 LDL
@@ -118,6 +146,8 @@ noas 4 EA4
 noas 4 EA3
 noas 4 days_phys
 noas 4 T2D
+noas 4 height_on_EA4
+noas 4 height_on_BMI
 noas 5 height
 noas 5 BMI
 noas 5 LDL
@@ -126,6 +156,8 @@ noas 5 EA4
 noas 5 EA3
 noas 5 days_phys
 noas 5 T2D
+noas 5 height_on_EA4
+noas 5 height_on_BMI
 noas 10 height
 noas 10 BMI
 noas 10 LDL
@@ -134,6 +166,8 @@ noas 10 EA4
 noas 10 EA3
 noas 10 days_phys
 noas 10 T2D
+noas 10 height_on_EA4
+noas 10 height_on_BMI
 noas 20 height
 noas 20 BMI
 noas 20 LDL
@@ -142,6 +176,8 @@ noas 20 EA4
 noas 20 EA3
 noas 20 days_phys
 noas 20 T2D
+noas 20 height_on_EA4
+noas 20 height_on_BMI
 noas 30 height
 noas 30 BMI
 noas 30 LDL
@@ -150,6 +186,8 @@ noas 30 EA4
 noas 30 EA3
 noas 30 days_phys
 noas 30 T2D
+noas 30 height_on_EA4
+noas 30 height_on_BMI
 noas 40 height
 noas 40 BMI
 noas 40 LDL
@@ -158,3 +196,5 @@ noas 40 EA4
 noas 40 EA3
 noas 40 days_phys
 noas 40 T2D
+noas 40 height_on_EA4
+noas 40 height_on_BMI

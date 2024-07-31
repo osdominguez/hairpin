@@ -3,3 +3,16 @@ sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/workflow.sh 0
 sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/workflow.sh 1 days_phys X884.0.0 /gpfs/data/ukb-share/extracted_phenotypes/days_phys/days_phys.pheno ACTIVITY1_single_p5e-8_sumstats.txt F days_phys/days_phys.pheno BETA SNPID CHR BP EFFECT_ALLELE OTHER_ALLELE PVALUE beta EAF:0.05
 
 sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/workflow.sh 1 T2D X2443.0.0 /gpfs/data/ukb-share/extracted_phenotypes/T2D/T2D.pheno EUR_Metal_LDSC-CORR_Neff.v2.txt T T2D/T2D.pheno Beta not_avail Chromsome Position EffectAllele NonEffectAllele Pval beta EAF:0.05 
+
+sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/workflow.sh 1 height_on_EA4 EA4 /gpfs/data/ukb-share/extracted_phenotypes/EA4/EA4.pheno GIANT_HEIGHT_new_R.csv F EA4/EA4.pheno BETA RSID CHR POS EFFECT_ALLELE OTHER_ALLELLE P beta EFFECT_ALLELE_FREQ:0.05
+
+sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/new_phen_format.sh height_on_EA4 EA4 /gpfs/data/ukb-share/extracted_phenotypes/EA4/EA4.pheno GIANT_HEIGHT_new_R.csv F EA4/EA4.pheno BETA RSID CHR POS EFFECT_ALLELE OTHER_ALLELLE P beta EFFECT_ALLELE_FREQ:0.05
+
+sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/new_phen_format.sh height_on_BMI X21001 /gpfs/data/ukb-share/extracted_phenotypes/BMI/BMI674178.pheno GIANT_HEIGHT_new_R.csv F BMI/BMI674178.pheno BETA RSID CHR POS EFFECT_ALLELE OTHER_ALLELLE P beta EFFECT_ALLELE_FREQ:0.05
+
+
+
+
+EA4_additive_excl_23andMe.txt F EA3/EA3.pheno Beta rsID Chr not_avail Effect_allele Other_allele P beta EA3 EAF_HRC:0.05
+
+GIANT_HEIGHT_new_R.csv F Height/Height674178.pheno BETA RSID CHR POS EFFECT_ALLELE OTHER_ALLELLE P beta height EFFECT_ALLELE_FREQ:0.05
