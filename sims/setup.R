@@ -16,4 +16,5 @@ nS		<- length(maxS)
 
 gens <- c(1, 2, 3) #num generations to look at
 
-maxit	<- 10
+maxit	<- 200
+boot_n <- 100

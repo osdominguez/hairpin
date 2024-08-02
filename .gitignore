@@ -13,3 +13,4 @@ txt_files/missing_pgs.txt
 # ignore sim outputs
 sims/Rdata/
 sims/Rout/
+sims/boots/

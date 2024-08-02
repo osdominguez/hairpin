@@ -1,12 +1,13 @@
-run_gwas	<- function(y,G,pop,pc,pc10){
+run_gwas	<- function(y,G,pop,pc,pc4,pc10){
 
 	betas			<- apply( G, 2, function(g) safe_lm( summary( lm( y ~ 1+g			) )$coef ) )
 	betas_adj	<- apply( G, 2, function(g) safe_lm( summary( lm( y ~ 1+g+pop	) )$coef ) )
 	betas_pc	<- apply( G, 2, function(g) safe_lm( summary( lm( y ~ 1+g+pc	) )$coef ) )
-	betas_pc10<- apply( G, 2, function(g) safe_lm( summary( lm( y ~ 1+g+pc10) )$coef ) )
+	betas_pc4 <- apply( G, 2, function(g) safe_lm( summary( lm( y ~ 1+g+pc4) )$coef ) )
+	betas_pc10 <- apply( G, 2, function(g) safe_lm( summary( lm( y ~ 1+g+pc10) )$coef ) )
 	#betas_pc10<- NA
 
-	list( betas=betas, betas_adj=betas_adj, betas_pc=betas_pc, betas_pc10=betas_pc10 )
+	list( betas=betas, betas_adj=betas_adj, betas_pc=betas_pc, betas_pc4=betas_pc4, betas_pc10=betas_pc10 )
 }
 
 corve_fxn	<- function(x1,x2,y,z){

@@ -46,10 +46,16 @@ if (boot) {
 if (file.exists(hfile)) {
   hairpin_df <- read.table(file = hfile, header = TRUE)
   pcs <- setdiff(pcs, as.numeric(unique(hairpin_df$pc_num)))
+  rm(hairpin_df)
 } else {
+  if (boot) {
+    hairpin_df <- data.frame(matrix(ncol=6, nrow=0, dimnames=list(NULL, c("phenotype", "threshold", "pc_num", "r2", "theta_eo", "replicate"))))
+  } else {
   hairpin_df <- data.frame(matrix(ncol=5, nrow=0, dimnames=list(NULL, c("phenotype", "threshold", "pc_num", "r2", "theta_eo"))))  
+  }
+  write.table(hairpin_df, hfile, header=TRUE)
 }
-  
+
 #read in phenotype file 
 pheno_df <- read.table(phen_path, header = TRUE)
 
@@ -58,6 +64,8 @@ pheno_df <- read.table(phen_path, header = TRUE)
 # for each number of principal components, read in the PC file then work on each p-value threshold 
 for (pc in pcs) {
   
+  hairpin_df <- data.frame(matrix(ncol=5, nrow=0, dimnames=list(NULL, c("phenotype", "threshold", "pc_num", "r2", "theta_eo")))) 
+
   #read in PC table and the PRS table that contains all the scores for that PC  
   pc_df <- read.table("/gpfs/data/ukb-share/extracted_phenotypes/covar_full/covar_full_age2.pheno", header=TRUE, sep = " ") 
   
@@ -107,6 +115,7 @@ for (pc in pcs) {
       even_df <- full_df[, !grepl("all|odd", colnames(full_df))]
       odd_df <- full_df[, !grepl("all|even", colnames(full_df))]
       rm(full_df)
+      rm(prs_subset)
 
       # run linear models and get residuals for each function
       even_lm <- lm(paste0("even_", pval," ~ . "), data = even_df, na.action = na.omit)
@@ -130,6 +139,7 @@ for (pc in pcs) {
       rm(r_2)
 
     } else {
+      rm(prs_subset)
       # create the new row to the hairpin dataframe 
       new_row <- data.frame(phenotype = phen_name,
                             threshold = pval,
@@ -138,23 +148,15 @@ for (pc in pcs) {
                             theta_eo = NA)
       
     }
-    
-    rm(prs_subset)
 
     # add the new row to the dataframe
-    hairpin_df <- rbind(hairpin_df, new_row)
-    if (boot) {
-      hairpin_df <- hairpin_df %>% mutate(replicate = run_n)
-      write.table(hairpin_df,  file = paste0(tmp_dir, phen_name, "_", as, "_bootstrap_", run_n, ".table"), row.names = F, quote = F)
-    } else {
-      write.table(hairpin_df, file = paste0(out_dir, phen_name, "_", as, "_base.table"), row.names = F, quote = F)
-    } 
+    hairpin_df <- rbind(hairpin_df, new_row) 
   }
-}
 
-if (boot) {
-  hairpin_df <- hairpin_df %>% mutate(replicate = run_n)
-  write.table(hairpin_df,  file = paste0(tmp_dir, phen_name, "_", as, "_bootstrap_", run_n, ".table"), row.names = F, quote = F)
-} else {
-  write.table(hairpin_df, file = paste0(out_dir, phen_name, "_", as, "_base.table"), row.names = F, quote = F)
+  if (boot) {
+    hairpin_df <- hairpin_df %>% mutate(replicate = run_n)
+    write.table(hairpin_df,  file = paste0(tmp_dir, phen_name, "_", as, "_bootstrap_", run_n, ".table"), row.names = F, col.names = F, quote = F, append=TRUE)
+  } else {
+    write.table(hairpin_df, file = paste0(out_dir, phen_name, "_", as, "_base.table"), row.names = F, col.names = F, quote = F, append=TRUE)
+  }
 }

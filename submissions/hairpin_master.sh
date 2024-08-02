@@ -2,10 +2,10 @@
 
 #SBATCH --job-name=hairpin_master
 #SBATCH --time=12:00:00
-#SBATCH --mem=100gb
+#SBATCH --mem=20gb
 #SBATCH --output=/home/osdominguez/output/hairpin_analysis/hairpin_sub_%a_%A.out
 #SBATCH --error=/home/osdominguez/output/hairpin_analysis/hairpin_sub_%a_%A.err
-#SBATCH --array=1-1%101
+#SBATCH --array=2-2%101
 
 TXT_PATH=/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/hairpin.txt
 CODE="/gpfs/data/ukb-share/dahl/ophelia/hairpin/code/hairpin_array.R"
