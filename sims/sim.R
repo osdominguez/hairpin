@@ -21,7 +21,7 @@ for (it in sample(maxit)) {
     	ev	<- 1:(M/2)
     	od	<- 1:(M/2)+M/2
     
-    	corves	<- array( NA, dim=c(2,5,nS), dimnames=list( c('cor','ve'), c( 'true', 'estraw', 'estpc', 'estpc10', 'estorac' ), maxS ) )
+    	corves	<- array( NA, dim=c(2,6,nS), dimnames=list( c('cor','ve'), c( 'true', 'estraw', 'estpc', 'estpc4', 'estpc10', 'estorac' ), maxS ) )
     	set.seed( it )
     	dat		<- simfxn( N, M, Fsts[F_i], gamma, h2, tcor, gen )
     	
@@ -46,27 +46,27 @@ for (it in sample(maxit)) {
     
     		prsE	<- beta2prs( dat$betas[ev], -abs(dat$betas[ev]), maxS[s_i], dat$Gtest[,ev] )
     		prsO	<- beta2prs( dat$betas[od], -abs(dat$betas[od]), maxS[s_i], dat$Gtest[,od] )
-    		corves[,'true'		,s_i]	<- corve_fxn( prsE, prsO, dat$ytest )
+    		corves[,'true',s_i]	<- corve_fxn( prsE, prsO, dat$ytest )
     
     		prsE	<- beta2prs( gwas$betas[1,ev], gwas$betas[4,ev], maxS[s_i], dat$Gtest[,ev] )
     		prsO	<- beta2prs( gwas$betas[1,od], gwas$betas[4,od], maxS[s_i], dat$Gtest[,od] )
-    		corves[,'estraw'		,s_i]	<- corve_fxn( prsE, prsO, dat$ytest )
+    		corves[,'estraw',s_i]	<- corve_fxn( prsE, prsO, dat$ytest )
     
     		prsE	<- beta2prs( gwas$betas_pc [1,ev], gwas$betas_pc [4,ev], maxS[s_i], dat$Gtest[,ev] )
     		prsO	<- beta2prs( gwas$betas_pc [1,od], gwas$betas_pc [4,od], maxS[s_i], dat$Gtest[,od] )
-    		corves[,'estpc'		,s_i]	<- corve_fxn( prsE, prsO, dat$ytest, z=pctest )
+    		corves[,'estpc',s_i]	<- corve_fxn( prsE, prsO, dat$ytest, z=pctest )
     
 			prsE	<- beta2prs( gwas$betas_pc4[1,ev], gwas$betas_pc4[4,ev],maxS[s_i], dat$Gtest[,ev] )
     		prsO	<- beta2prs( gwas$betas_pc4[1,od], gwas$betas_pc4[4,od],maxS[s_i], dat$Gtest[,od] )
-    		corves[,'estpc4'	,s_i]	<- corve_fxn( prsE, prsO, dat$ytest, z=pctest4 )
+    		corves[,'estpc4',s_i]	<- corve_fxn( prsE, prsO, dat$ytest, z=pctest4 )
 
     		prsE	<- beta2prs( gwas$betas_pc10[1,ev], gwas$betas_pc10[4,ev],maxS[s_i], dat$Gtest[,ev] )
     		prsO	<- beta2prs( gwas$betas_pc10[1,od], gwas$betas_pc10[4,od],maxS[s_i], dat$Gtest[,od] )
-    		corves[,'estpc10'	,s_i]	<- corve_fxn( prsE, prsO, dat$ytest, z=pctest10 )
+    		corves[,'estpc10',s_i]	<- corve_fxn( prsE, prsO, dat$ytest, z=pctest10 )
     
     		prsE	<- beta2prs( gwas$betas_adj[1,ev], gwas$betas_adj[4,ev], maxS[s_i], dat$Gtest[,ev] )
     		prsO	<- beta2prs( gwas$betas_adj[1,od], gwas$betas_adj[4,od], maxS[s_i], dat$Gtest[,od] )
-    		corves[,'estorac'	,s_i]	<- corve_fxn( prsE, prsO, dat$ytest, z=dat$poptest )
+    		corves[,'estorac',s_i]	<- corve_fxn( prsE, prsO, dat$ytest, z=dat$poptest )
 
 			for (b_i in 1:boot_n) {
 				t_df <- data.frame(matrix(ncol=6, nrow=1, dimnames=list(NULL, c("Fst", "SNPS", "pc_num", "r2", "theta_eo", "replicate")))) 
@@ -157,5 +157,6 @@ for (it in sample(maxit)) {
   	sink()
     }
 	write.table(boot_df, file = boot_save, row.names = F, quote = F)
+	rm(boot_df)
   }
 }

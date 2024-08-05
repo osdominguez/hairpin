@@ -53,7 +53,7 @@ if (file.exists(hfile)) {
   } else {
   hairpin_df <- data.frame(matrix(ncol=5, nrow=0, dimnames=list(NULL, c("phenotype", "threshold", "pc_num", "r2", "theta_eo"))))  
   }
-  write.table(hairpin_df, hfile, header=TRUE)
+  write.table(hairpin_df, hfile, row.names = F, quote = F)
 }
 
 #read in phenotype file 
