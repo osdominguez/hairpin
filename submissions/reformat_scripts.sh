@@ -78,3 +78,4 @@ reform_array "${txt_dir}/combinations.txt" "${sub_dir}/hairpin_PGS_master.sh" 30
 reform_array "${txt_dir}/hairpin.txt" "${sub_dir}/hairpin_master.sh" 101
 reform_array "${txt_dir}/phens.txt" "${sub_dir}/merge_master.sh" 1
 reform_array "${txt_dir}/linearity.txt" "${sub_dir}/linearity.sh" 40
+reform_array "${txt_dir}/tables.txt" "${sub_dir}/tables.sh" 2

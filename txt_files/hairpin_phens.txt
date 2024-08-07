@@ -8,3 +8,5 @@
 /gpfs/data/ukb-share/extracted_phenotypes/T2D/T2D.pheno T2D X2443.0.0
 /gpfs/data/ukb-share/extracted_phenotypes/EA4/EA4.pheno height_on_EA4 EA4
 /gpfs/data/ukb-share/extracted_phenotypes/BMI/BMI674178.pheno height_on_BMI X21001
+/gpfs/data/ukb-share/extracted_phenotypes/BMI/BMI674178.pheno EA4_on_BMI X21001
+/gpfs/data/ukb-share/extracted_phenotypes/Height/Height674178.pheno EA4_on_height X50

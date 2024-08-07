@@ -11,10 +11,11 @@ cd "/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files"
 file1="assess_no_.txt"
 file2="pcs.txt"
 file3="phens.txt"
+file4="pops.txt"
 output_file="linearity.txt"
 
 # Check if all input files exist
-if [ ! -f "$file1" ] || [ ! -f "$file2" ] || [ ! -f "$file3" ]; then
+if [ ! -f "$file1" ] || [ ! -f "$file2" ] || [ ! -f "$file3" ] || [ ! -f "$file4" ]; then
     echo "Error: One or more input files do not exist."
     exit 1
 fi
@@ -28,7 +29,10 @@ while IFS= read -r line1 || [ -n "$line1" ]; do
     while IFS= read -r line2 || [ -n "$line2" ]; do
         # Read each line from file3
         while IFS= read -r line3 || [ -n "$line3" ]; do
-            echo "$line1 $line2 $line3" >> "$output_file"
+            # Read each line from file3
+            while IFS= read -r line4 || [ -n "$line4" ]; do
+                echo "$line1 $line2 $line3 $line4" >> "$output_file"
+            done < "$file4"
         done < "$file3"
     done < "$file2"
 done < "$file1"

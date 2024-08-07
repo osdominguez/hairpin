@@ -5,11 +5,12 @@ library(data.table)
 
 args <- commandArgs(trailingOnly = TRUE)
 
-if (length(args)!=1) {
-    stop("Only one argument has to be supplied", call.=FALSE)
+if (length(args)!=2) {
+    stop("Only two arguments has to be supplied", call.=FALSE)
 } 
 
 phen <- toString(args[1])
+pop <- toString(args[2])
 
 txt_path <- file.path('/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files')
 
@@ -24,7 +25,7 @@ make_prs_df <- function(pheno) {
         # for every PC, add all the PRS score columns into one dataframe
         for (pc in pcs) {
             
-            f <- paste0("/scratch/osdominguez/tables/", paste0(pheno,pc,as),".table")
+            f <- paste0("/scratch/osdominguez/tables/", pop, "/", paste0(pheno,pc,as),".table")
 
             if (file.exists(f)) {
                 # If table already exists read it in
@@ -39,9 +40,9 @@ make_prs_df <- function(pheno) {
 
             for (pval in pvals) {
                 if (!(paste0("all_", pval) %in% alr_pvals)) {
-                    odd_path <- paste0("/scratch/osdominguez/prs_hairpin_outputs/odd/", pheno,"_prs_",as,"_",pc,"pc_",pval,"pval.best")
-                    even_path <- paste0("/scratch/osdominguez/prs_hairpin_outputs/even/", pheno,"_prs_",as,"_",pc,"pc_",pval,"pval.best")
-                    all_path <- paste0("/scratch/osdominguez/prs_hairpin_outputs/all/", pheno,"_prs_",as,"_",pc,"pc_",pval,"pval.best")
+                    odd_path <- paste0("/scratch/osdominguez/prs_hairpin_outputs/", pop, "/odd/", pheno,"_prs_",as,"_",pc,"pc_",pval,"pval.best")
+                    even_path <- paste0("/scratch/osdominguez/prs_hairpin_outputs/", pop, "/even/", pheno,"_prs_",as,"_",pc,"pc_",pval,"pval.best")
+                    all_path <- paste0("/scratch/osdominguez/prs_hairpin_outputs/", pop, "/all/", pheno,"_prs_",as,"_",pc,"pc_",pval,"pval.best")
 
                     o_exists <- try(read.table(odd_path, header=TRUE, sep = " ")) 
                     e_exists <- try(read.table(even_path, header=TRUE, sep= " ")) 
@@ -66,7 +67,7 @@ make_prs_df <- function(pheno) {
                 }    
             }
 
-            write.table(ids_df, file = paste0("/scratch/osdominguez/tables/", paste0(pheno,pc,as),".table"), row.names = F, quote = F)
+            write.table(ids_df, file = paste0("/scratch/osdominguez/tables/", pop, "/", paste0(pheno,pc,as),".table"), row.names = F, quote = F)
             
         }
     }

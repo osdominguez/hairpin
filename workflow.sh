@@ -38,6 +38,7 @@ if [[ ${new} == 1 ]]; then
     maf=${16} # allele frequency (think this is effect allele) then put :0.05
 
     sbatch --wait ${txt_dir}/new_phen_format.sh \
+        ${new} \
         ${phen_name} \
         ${phen_id} \
         ${phen_path} \
@@ -54,6 +55,8 @@ if [[ ${new} == 1 ]]; then
         ${stat} \
         ${maf}
 
+else
+    sbatch --wait ${txt_dir}/new_phen_format.sh ${new}
 fi
 
 # Run hairpin workflow
@@ -62,7 +65,7 @@ sbatch --wait ${sh_dir}/hairpin_PGS_master.sh
 echo "finished running hairpin PGS"
 
 echo "running tabling for hairpin PGS..."
-sbatch --wait ${sh_dir}/tables_master.sh
+sbatch --wait ${sh_dir}/tables.sh
 echo "finished tabling hairpin PGS"
 
 echo "running hairpin..."

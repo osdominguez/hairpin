@@ -4,8 +4,8 @@ library(dplyr)
 
 args <- commandArgs(trailingOnly = TRUE)
 
-if (length(args) < 6) {
-  stop("Six arguments must be supplied", call.=FALSE)
+if (length(args) < 7) {
+  stop("Seven arguments must be supplied", call.=FALSE)
 } 
 
 phen_path <- toString(args[1])
@@ -14,6 +14,7 @@ phen_id <- toString(args[3])
 boot <- as.logical(args[4])
 run_n <- as.numeric(args[5])
 as <- toString(args[6])
+pop <- toString(args[7])
 
 # this function generates the necessary column names for a specific number of pcs
 # R doesn't like the "-" in some of the headers so it changes them to "."
@@ -31,8 +32,8 @@ pc_header <- function(n_pcs) {
 }
 
 txt_path <- file.path('/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files')
-out_dir <- "/gpfs/data/ukb-share/dahl/ophelia/hairpin/plotting/"
-tmp_dir <- "/scratch/osdominguez/temp_boot/"
+out_dir <- paste0("/gpfs/data/ukb-share/dahl/ophelia/hairpin/plotting/", pop,"/")
+tmp_dir <- paste0("/scratch/osdominguez/temp_boot/", pop,"/")
 
 pcs <- scan(file.path(txt_path, '/pcs.txt'), what = integer())
 pvals_list <- scan(file.path(txt_path, '/pvalues.txt'), what = character())
@@ -73,7 +74,7 @@ for (pc in pcs) {
   
   for (pval in pvals_list) {
     
-    prs_df <- read.table(paste0("/scratch/osdominguez/tables/", phen_name, pc, as, ".table"), header=TRUE, sep = " ")
+    prs_df <- read.table(paste0("/scratch/osdominguez/tables/", pop, "/", phen_name, pc, as, ".table"), header=TRUE, sep = " ")
   
     # if a bootstrap is being called for resample the dataframe with a set seed 
     if (run_n != 0) {
@@ -95,6 +96,9 @@ for (pc in pcs) {
       full_df <- merge(full_df, pheno_df, by =  c("FID", "IID"))
       full_df <- full_df %>%  select(-c("FID","IID")) 
       
+      full_df <- full_df %>% select(-c(FID, IID))
+      full_df <- full_df[, !grepl("even|odd", colnames(full_df))] 
+
       # Regress based on the ID of the phenotype (as shown up in the .pheno file)
       full_mod <- lm(paste0(phen_id," ~ ."), data = full_df, na.action = na.omit) 
       full_r2 <- summary(full_mod)$r.squared

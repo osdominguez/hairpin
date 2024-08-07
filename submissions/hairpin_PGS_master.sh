@@ -5,11 +5,9 @@
 #SBATCH --mem=10gb
 #SBATCH --output=/home/osdominguez/output/hairpin_PGS/hairpin_PGS_%a_%A.out
 #SBATCH --error=/home/osdominguez/output/hairpin_PGS/hairpin_PGS_%a_%A.err
-#SBATCH --array=1-22200%300
+#SBATCH --array=1-26640%300
 
 TXT_PATH=/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/combinations.txt
-
-[[ ( ${SLURM_ARRAY_TASK_ID} -gt $(awk 'END{print NR}' ${TXT_PATH}) ) ]] && { echo "slurm ID greater"; exit 0; }
 
 module load gcc/12.1.0
 module load R/4.3.1
@@ -18,7 +16,6 @@ COV_FILE=/gpfs/data/ukb-share/extracted_phenotypes/covar_full/covar_full_age2.ph
 OUT_DIR=/scratch/osdominguez/prs_hairpin_outputs
 
 PHENO_DIR="/gpfs/data/ukb-share/extracted_phenotypes"
-BED_DIR="/scratch/osdominguez/bgen_files/white_brit_unrelated"
 SUM_DIR="/gpfs/data/ukb-share/dahl/ophelia/hairpin/sum_stats/nodups_sumstats"
 
 readarray -t parms < <(awk -v row="${SLURM_ARRAY_TASK_ID}" 'NR == row {for(i=1; i<=NF; i++) print $i}' "${TXT_PATH}")
@@ -41,9 +38,19 @@ pname=${parms[14]}
 maf=${parms[15]}
 dir=${parms[16]}
 bfile=${parms[17]}
+pop_lab=${parms[18]}
 
-[[ -f /scratch/osdominguez/prs_hairpin_outputs/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval.best ]] && { exit 1; }
-grep -qE "${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval.best" /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/missing_pgs.txt && exit 1
+BED_DIR="/scratch/osdominguez/bgen_files"/${pop_lab}
+
+if [[ -f /scratch/osdominguez/prs_hairpin_outputs/${pop_lab}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval.best ]]; then
+    echo "/scratch/osdominguez/prs_hairpin_outputs/${pop_lab}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval.best already exists"
+    exit 1
+fi
+
+if [[ grep -qE "${pop_lab}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval.best" /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/missing_pgs.txt ]]; then
+    echo "${pop_lab}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval has been accounted for"
+    exit 1
+fi
 
 if [[ ${as} == "as_" ]]; then
     COVS=FID,IID,X31.0.0,X21003.0.0,X54.0.0,X22000.0.0,age2
@@ -87,12 +94,20 @@ Rscript /gpfs/data/ukb-share/dahl/ophelia/PRSice.R \
     --base-info INFO:0.8 \
     --base-maf ${maf} \
     --"${stat}" \
-    --out ${OUT_DIR}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval
+    --out ${OUT_DIR}/${pop_lab}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval
 
-chgrp cri-ukb_share ${OUT_DIR}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval*
-chmod g+rx ${OUT_DIR}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval*
+echo "finished running PRSice"
 
-if [[ ! -f /scratch/osdominguez/prs_hairpin_outputs/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval.best ]]; then
-    echo "${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval.best" >> /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/missing_pgs.txt
+rm ${OUT_DIR}/${pop_lab}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval_BARPLOT*
+rm ${OUT_DIR}/${pop_lab}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval.summary
+rm ${OUT_DIR}/${pop_lab}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval.mismatch
+rm ${OUT_DIR}/${pop_lab}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval.log
+rm ${OUT_DIR}/${pop_lab}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval.prsice
+
+chgrp cri-ukb_share ${OUT_DIR}${pop_lab}//${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval*
+chmod g+rx ${OUT_DIR}/${pop_lab}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval*
+
+if [[ ! -f /scratch/osdominguez/prs_hairpin_outputs/${pop_lab}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval.best ]]; then
+    echo "${pop_lab}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval.best" >> /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/missing_pgs.txt
 fi
 

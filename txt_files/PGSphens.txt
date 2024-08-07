@@ -8,3 +8,5 @@ ACTIVITY1_single_p5e-8_sumstats.txt F days_phys/days_phys.pheno BETA SNPID CHR B
 EUR_Metal_LDSC-CORR_Neff.v2.txt T T2D/T2D.pheno Beta not_avail Chromsome Position EffectAllele NonEffectAllele Pval beta T2D EAF:0.05
 GIANT_HEIGHT_new_R.csv F EA4/EA4.pheno BETA RSID CHR POS EFFECT_ALLELE OTHER_ALLELLE P beta height_on_EA4 EFFECT_ALLELE_FREQ:0.05
 GIANT_HEIGHT_new_R.csv F BMI/BMI674178.pheno BETA RSID CHR POS EFFECT_ALLELE OTHER_ALLELLE P beta height_on_BMI EFFECT_ALLELE_FREQ:0.05
+EA4_additive_excl_23andMe.txt F BMI/BMI674178.pheno Beta rsID Chr not_avail Effect_allele Other_allele P beta EA4_on_BMI EAF_HRC:0.05
+EA4_additive_excl_23andMe.txt F Height/Height674178.pheno Beta rsID Chr not_avail Effect_allele Other_allele P beta EA4_on_height EAF_HRC:0.05

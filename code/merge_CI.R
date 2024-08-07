@@ -11,10 +11,11 @@ phen_path <- toString(args[1])
 phen_name <- toString(args[2])
 phen_id <- toString(args[3])
 boot_n <- as.numeric(args[4])
+pop <- toString(args[5])
 
 for (as in c("as", "noas")) {
-  out_dir <- "/gpfs/data/ukb-share/dahl/ophelia/hairpin/plotting/"
-  tmp_dir <- "/scratch/osdominguez/temp_boot/"
+  out_dir <- paste0("/gpfs/data/ukb-share/dahl/ophelia/hairpin/plotting/", pop, "/")
+  tmp_dir <- paste0("/scratch/osdominguez/temp_boot/", pop, "/")
   boot_df <- data.frame(matrix(ncol=6, nrow=0, dimnames=list(NULL, c("phenotype", "threshold", "pc_num", "r2", "theta_eo", "replicate")))) 
 
   for (i in 1:boot_n) {

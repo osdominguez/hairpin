@@ -6,10 +6,10 @@ source( 'simfxn.R' )
 source( 'gwas_fxns.R' )
 source( 'setup.R' )
 
-for (it in sample(maxit)) {
+for (it in 1:maxit) {
   for (gen in gens) {
-    boot_df <- data.frame(matrix(ncol=6, nrow=0, dimnames=list(NULL, c("Fst", "SNPS", "pc_num", "r2", "theta_eo", "replicate"))))
-	boot_save <- paste0( 'boots/hairpins_', N, '_', M, '_', gamma, '_', gen, '_', it, '_bootstrap.table' ) 
+    #boot_df <- data.frame(matrix(ncol=6, nrow=0, dimnames=list(NULL, c("Fst", "SNPS", "pc_num", "r2", "theta_eo", "replicate"))))
+	#boot_save <- paste0( 'boots/hairpins_', N, '_', M, '_', gamma, '_', gen, '_', it, '_bootstrap.table' ) 
 	for ( F_i in 1:nF ) {
     	savefile	<- paste0( 'Rdata/hairpins_', N, '_', M, '_', Fsts[F_i], '_', gamma, '_', gen, '_', it, '.Rdata' )
     	sinkfile	<- paste0(  'Rout/hairpins_', N, '_', M, '_', Fsts[F_i], '_', gamma, '_', gen, '_', it, '.Rout' )
@@ -68,95 +68,95 @@ for (it in sample(maxit)) {
     		prsO	<- beta2prs( gwas$betas_adj[1,od], gwas$betas_adj[4,od], maxS[s_i], dat$Gtest[,od] )
     		corves[,'estorac',s_i]	<- corve_fxn( prsE, prsO, dat$ytest, z=dat$poptest )
 
-			for (b_i in 1:boot_n) {
-				t_df <- data.frame(matrix(ncol=6, nrow=1, dimnames=list(NULL, c("Fst", "SNPS", "pc_num", "r2", "theta_eo", "replicate")))) 
-				t_df$replicate <- b_i
-				t_df$SNPS <- maxS[s_i]
-				t_df$Fst <- Fsts[F_i]
+			#for (b_i in 1:boot_n) {
+		#		t_df <- data.frame(matrix(ncol=6, nrow=1, dimnames=list(NULL, c("Fst", "SNPS", "pc_num", "r2", "theta_eo", "replicate")))) 
+		#		t_df$replicate <- b_i
+		#		t_df$SNPS <- maxS[s_i]
+		#		t_df$Fst <- Fsts[F_i]
+		#		
+		#		ev_t <- sample(ev, length(ev), replace=TRUE)
+		#		od_t <- sample(od, length(od), replace=TRUE)
+		#		
+		#		t_df$pc_num <- "unadj"
+		#		prsE	<- beta2prs( dat$betas[ev_t], -abs(dat$betas[ev_t])	, maxS[s_i], dat$Gtest[,ev_t] )
+    	#		prsO	<- beta2prs( dat$betas[od_t], -abs(dat$betas[od_t])	, maxS[s_i], dat$Gtest[,od_t] )
+    	#		cvs	<- corve_fxn( prsE, prsO, dat$ytest )
+		#		
+		#		teo <- cvs[1]
+		#		r2 <- cvs[2]
+		#		t_df$theta_eo <- teo
+		#		t_df$r2 <- r2
+#
+#				boot_df <- rbind(boot_df, t_df)
+#
+#				t_df$pc_num <- "0"
+#				prsE	<- beta2prs( gwas$betas[1,ev_t], gwas$betas[4,ev_t], maxS[s_i], dat$Gtest[,ev_t] )
+ #   			prsO	<- beta2prs( gwas$betas[1,od_t], gwas$betas[4,od_t], maxS[s_i], dat$Gtest[,od_t] )
+  #  			cvs	<- corve_fxn( prsE, prsO, dat$ytest )
+	#			
+	#			teo <- cvs[1]
+	#			r2 <- cvs[2]
+	#			t_df$theta_eo <- teo
+	#			t_df$r2 <- r2
 
-				ev_t <- sample(ev, length(ev), replace=TRUE)
-				od_t <- sample(od, length(od), replace=TRUE)
+	#			boot_df <- rbind(boot_df, t_df)
+#
+#				t_df$pc_num <- "1"
+#				prsE	<- beta2prs( gwas$betas_pc [1,ev_t]	, gwas$betas_pc [4,ev_t], maxS[s_i], dat$Gtest[,ev_t] )
+ #   			prsO	<- beta2prs( gwas$betas_pc [1,od_t]	, gwas$betas_pc [4,od_t], maxS[s_i], dat$Gtest[,od_t] )
+  #  			cvs	<- corve_fxn( prsE, prsO, dat$ytest )
+	#			
+	#			teo <- cvs[1]
+	#			r2 <- cvs[2]
+	#			t_df$theta_eo <- teo
+	#			t_df$r2 <- r2
+
+	#			boot_df <- rbind(boot_df, t_df)
+
+	#			t_df$pc_num <- "4"
+	#			prsE	<- beta2prs( gwas$betas_pc4[1,ev_t], gwas$betas_pc4[4,ev_t],maxS[s_i], dat$Gtest[,ev_t] )
+    #			prsO	<- beta2prs( gwas$betas_pc4[1,od_t], gwas$betas_pc4[4,od_t],maxS[s_i], dat$Gtest[,od_t] )
+    #			cvs	<- corve_fxn( prsE, prsO, dat$ytest )
 				
-				t_df$pc_num <- "unadj"
-				prsE	<- beta2prs( dat$betas[ev_t], -abs(dat$betas[ev_t])	, maxS[s_i], dat$Gtest[,ev_t] )
-    			prsO	<- beta2prs( dat$betas[od_t], -abs(dat$betas[od_t])	, maxS[s_i], dat$Gtest[,od_t] )
-    			cvs	<- corve_fxn( prsE, prsO, dat$ytest )
+	#			teo <- cvs[1]
+	#			r2 <- cvs[2]
+	#			t_df$theta_eo <- teo
+	#			t_df$r2 <- r2
+
+	#			boot_df <- rbind(boot_df, t_df)
+
+	#			t_df$pc_num <- "10"
+    #			prsE	<- beta2prs( gwas$betas_pc10[1,ev_t], gwas$betas_pc10[4,ev_t],maxS[s_i], dat$Gtest[,ev_t] )
+    #			prsO	<- beta2prs( gwas$betas_pc10[1,od_t], gwas$betas_pc10[4,od_t],maxS[s_i], dat$Gtest[,od_t] )
+    #			cvs	<- corve_fxn( prsE, prsO, dat$ytest )
 				
-				teo <- cvs[1]
-				r2 <- cvs[2]
-				t_df$theta_eo <- teo
-				t_df$r2 <- r2
+	#			teo <- cvs[1]
+	#			r2 <- cvs[2]
+	#			t_df$theta_eo <- teo
+	#			t_df$r2 <- r2
 
-				boot_df <- rbind(boot_df, t_df)
+	#			boot_df <- rbind(boot_df, t_df)
 
-				t_df$pc_num <- "0"
-				prsE	<- beta2prs( gwas$betas[1,ev_t], gwas$betas[4,ev_t], maxS[s_i], dat$Gtest[,ev_t] )
-    			prsO	<- beta2prs( gwas$betas[1,od_t], gwas$betas[4,od_t], maxS[s_i], dat$Gtest[,od_t] )
-    			cvs	<- corve_fxn( prsE, prsO, dat$ytest )
+	#			t_df$pc_num <- "true"
+	#			prsE	<- beta2prs( gwas$betas_adj[1,ev_t]	, gwas$betas_adj[4,ev_t], maxS[s_i], dat$Gtest[,ev_t] )
+    #			prsO	<- beta2prs( gwas$betas_adj[1,od_t]	, gwas$betas_adj[4,od_t], maxS[s_i], dat$Gtest[,od_t] )
+    #			cvs	<- corve_fxn( prsE, prsO, dat$ytest )
 				
-				teo <- cvs[1]
-				r2 <- cvs[2]
-				t_df$theta_eo <- teo
-				t_df$r2 <- r2
+	#			teo <- cvs[1]
+	#			r2 <- cvs[2]
+	#			t_df$theta_eo <- teo
+	#			t_df$r2 <- r2
 
-				boot_df <- rbind(boot_df, t_df)
+	#			boot_df <- rbind(boot_df, t_df)
 
-				t_df$pc_num <- "1"
-				prsE	<- beta2prs( gwas$betas_pc [1,ev_t]	, gwas$betas_pc [4,ev_t], maxS[s_i], dat$Gtest[,ev_t] )
-    			prsO	<- beta2prs( gwas$betas_pc [1,od_t]	, gwas$betas_pc [4,od_t], maxS[s_i], dat$Gtest[,od_t] )
-    			cvs	<- corve_fxn( prsE, prsO, dat$ytest )
-				
-				teo <- cvs[1]
-				r2 <- cvs[2]
-				t_df$theta_eo <- teo
-				t_df$r2 <- r2
-
-				boot_df <- rbind(boot_df, t_df)
-
-				t_df$pc_num <- "4"
-				prsE	<- beta2prs( gwas$betas_pc4[1,ev_t], gwas$betas_pc4[4,ev_t],maxS[s_i], dat$Gtest[,ev_t] )
-    			prsO	<- beta2prs( gwas$betas_pc4[1,od_t], gwas$betas_pc4[4,od_t],maxS[s_i], dat$Gtest[,od_t] )
-    			cvs	<- corve_fxn( prsE, prsO, dat$ytest )
-				
-				teo <- cvs[1]
-				r2 <- cvs[2]
-				t_df$theta_eo <- teo
-				t_df$r2 <- r2
-
-				boot_df <- rbind(boot_df, t_df)
-
-				t_df$pc_num <- "10"
-    			prsE	<- beta2prs( gwas$betas_pc10[1,ev_t], gwas$betas_pc10[4,ev_t],maxS[s_i], dat$Gtest[,ev_t] )
-    			prsO	<- beta2prs( gwas$betas_pc10[1,od_t], gwas$betas_pc10[4,od_t],maxS[s_i], dat$Gtest[,od_t] )
-    			cvs	<- corve_fxn( prsE, prsO, dat$ytest )
-				
-				teo <- cvs[1]
-				r2 <- cvs[2]
-				t_df$theta_eo <- teo
-				t_df$r2 <- r2
-
-				boot_df <- rbind(boot_df, t_df)
-
-				t_df$pc_num <- "true"
-				prsE	<- beta2prs( gwas$betas_adj[1,ev_t]	, gwas$betas_adj[4,ev_t], maxS[s_i], dat$Gtest[,ev_t] )
-    			prsO	<- beta2prs( gwas$betas_adj[1,od_t]	, gwas$betas_adj[4,od_t], maxS[s_i], dat$Gtest[,od_t] )
-    			cvs	<- corve_fxn( prsE, prsO, dat$ytest )
-				
-				teo <- cvs[1]
-				r2 <- cvs[2]
-				t_df$theta_eo <- teo
-				t_df$r2 <- r2
-
-				boot_df <- rbind(boot_df, t_df)
-
-			}
-			rm(t_df)
+	#		}
+	#		rm(t_df)
 
     	}
   	save( corves, file=savefile )
   	sink()
     }
-	write.table(boot_df, file = boot_save, row.names = F, quote = F)
-	rm(boot_df)
+	#write.table(boot_df, file = boot_save, row.names = F, quote = F)
+	#rm(boot_df)
   }
 }
