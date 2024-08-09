@@ -10,3 +10,5 @@ GIANT_HEIGHT_new_R.csv F EA4/EA4.pheno BETA RSID CHR POS EFFECT_ALLELE OTHER_ALL
 GIANT_HEIGHT_new_R.csv F BMI/BMI674178.pheno BETA RSID CHR POS EFFECT_ALLELE OTHER_ALLELLE P beta height_on_BMI EFFECT_ALLELE_FREQ:0.05
 EA4_additive_excl_23andMe.txt F BMI/BMI674178.pheno Beta rsID Chr not_avail Effect_allele Other_allele P beta EA4_on_BMI EAF_HRC:0.05
 EA4_additive_excl_23andMe.txt F Height/Height674178.pheno Beta rsID Chr not_avail Effect_allele Other_allele P beta EA4_on_height EAF_HRC:0.05
+EA4_additive_excl_23andMe.txt T T2D/T2D.pheno Beta rsID Chr not_avail Effect_allele Other_allele P beta EA4_on_T2D EAF_HRC:0.05
+daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.txt F diff_MDDs/diff_MDDs.pheno OR SNP CHR BP A1 A2 P or GPpsy FRQ_A_45396:0.05

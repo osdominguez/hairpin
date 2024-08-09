@@ -1,3 +1,6 @@
 odd white_brit_unrelated/ukb_imp_chr0O_v3_whitebrit_unrelated_QC WBRT
 even white_brit_unrelated/ukb_imp_chr0E_v3_whitebrit_unrelated_QC WBRT
 all white_brit_unrelated/ukb_imp_chr0_v3_whitebrit_unrelated_QC WBRT
+odd white_euro/ukb_chr0O_WEUR WEUR
+even white_euro/ukb_chr0E_WEUR WEUR
+all white_euro/ukb_chr0_WEUR WEUR

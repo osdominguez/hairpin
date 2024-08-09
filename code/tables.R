@@ -6,7 +6,7 @@ library(data.table)
 args <- commandArgs(trailingOnly = TRUE)
 
 if (length(args)!=2) {
-    stop("Only two arguments has to be supplied", call.=FALSE)
+    stop("Only two arguments may be supplied", call.=FALSE)
 } 
 
 phen <- toString(args[1])

@@ -14,8 +14,14 @@ sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/new_phen_format.sh EA
 
 sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/workflow.sh 1 EA4_on_height X50 /gpfs/data/ukb-share/extracted_phenotypes/Height/Height674178.pheno EA4_additive_excl_23andMe.txt F Height/Height674178.pheno Beta rsID Chr not_avail Effect_allele Other_allele P beta EAF_HRC:0.05
 
-
+sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/workflow.sh 1 EA4_on_T2D T2D /gpfs/data/ukb-share/extracted_phenotypes/T2D/T2D.pheno EA4_additive_excl_23andMe.txt T T2D/T2D.pheno Beta rsID Chr not_avail Effect_allele Other_allele P beta EAF_HRC:0.05
 
 EA4_additive_excl_23andMe.txt F EA4/EA4.pheno Beta rsID Chr not_avail Effect_allele Other_allele P beta EA3 EAF_HRC:0.05
 
 GIANT_HEIGHT_new_R.csv F Height/Height674178.pheno BETA RSID CHR POS EFFECT_ALLELE OTHER_ALLELLE P beta height EFFECT_ALLELE_FREQ:0.05
+
+GIANT_HEIGHT_new_R.csv F Height/Height674178.pheno BETA RSID CHR POS EFFECT_ALLELE OTHER_ALLELLE P beta height EFFECT_ALLELE_FREQ:0.05
+
+daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.txt F diff_MDDs/diff_MDDs.pheno OR SNP CHR BP A1 A2 P or FRQ_A_45396:0.05
+
+sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/new_phen_format.sh GPpsy GPpsy /gpfs/data/ukb-share/extracted_phenotypes/diff_MDDs/diffMDDs.pheno daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.txt F diff_MDDs/diff_MDDs.pheno OR SNP CHR BP A1 A2 P or FRQ_A_45396:0.05

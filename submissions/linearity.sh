@@ -5,7 +5,7 @@
 #SBATCH --mem=10gb
 #SBATCH --output=/home/osdominguez/output/linearity/linearity_%a_%A.out
 #SBATCH --error=/home/osdominguez/output/linearity/linearity_%a_%A.err
-#SBATCH --array=1-240%40
+#SBATCH --array=1-560%40
 
 TXT_PATH=/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/linearity.txt
 
