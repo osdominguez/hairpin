@@ -5,7 +5,7 @@
 #SBATCH --mem=10gb
 #SBATCH --output=/home/osdominguez/output/hairpin_PGS/hairpin_PGS_%a_%A.out
 #SBATCH --error=/home/osdominguez/output/hairpin_PGS/hairpin_PGS_%a_%A.err
-#SBATCH --array=1-10360%200
+#SBATCH --array=1-5920%200
 
 TXT_PATH=/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/combinations.txt
 
@@ -106,11 +106,11 @@ hairpin_pgs() {
     rm ${OUT_DIR}/${pop_lab}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval.log
     rm ${OUT_DIR}/${pop_lab}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval.prsice
 
-    chgrp cri-ukb_share ${OUT_DIR}${pop_lab}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval*
-    chmod g+rx ${OUT_DIR}/${pop_lab}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval*
-
     if [[ ! -f /scratch/osdominguez/prs_hairpin_outputs/${pop_lab}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval.best ]]; then
         echo "${pop_lab}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval.best" >> /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/missing_pgs.txt
+    else
+        chgrp cri-ukb_share ${OUT_DIR}${pop_lab}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval*
+        chmod g+rx ${OUT_DIR}/${pop_lab}/${dir}/${pname}_prs_${as}${pc_n}pc_${p_value}pval*
     fi
 }
 

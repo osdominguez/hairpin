@@ -2,7 +2,7 @@
 
 #SBATCH --job-name=hairpin_full
 #SBATCH --time=24:00:00
-#SBATCH --mem=1gb
+#SBATCH --mem=10mb
 #SBATCH --output=/home/osdominguez/output/hairpin_full_%a_%A.out
 #SBATCH --error=/home/osdominguez/output/hairpin_full_%a_%A.err
 

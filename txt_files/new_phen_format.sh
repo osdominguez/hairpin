@@ -55,7 +55,10 @@ rm ${txt_dir}/hairpin.txt
 sbatch --wait ${txt_dir}/format_hairpin_txt.sh
 rm ${txt_dir}/linearity.txt
 sbatch --wait ${txt_dir}/format_linearity_txt.sh
+rm ${txt_dir}/tables.txt
+sbatch --wait ${txt_dir}/format_tables_txt.sh
 echo "successfully formatted txt files"
+
 
 if [[ ${new} == 1 ]]; then
     echo "reformatting scripts..."

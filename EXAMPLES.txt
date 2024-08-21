@@ -24,4 +24,14 @@ GIANT_HEIGHT_new_R.csv F Height/Height674178.pheno BETA RSID CHR POS EFFECT_ALLE
 
 daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.txt F diff_MDDs/diff_MDDs.pheno OR SNP CHR BP A1 A2 P or FRQ_A_45396:0.05
 
-sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/new_phen_format.sh GPpsy GPpsy /gpfs/data/ukb-share/extracted_phenotypes/diff_MDDs/diffMDDs.pheno daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.txt F diff_MDDs/diff_MDDs.pheno OR SNP CHR BP A1 A2 P or FRQ_A_45396:0.05
+sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/workflow.sh 1 GPpsy GPpsy /gpfs/data/ukb-share/extracted_phenotypes/GPpsy/GPpsy_observed.pheno daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.txt T GPpsy/GPpsy_observed.pheno OR SNP CHR BP A1 A2 P or FRQ_A_45396:0.05
+
+sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/new_phen_format.sh 1 DepAll DepAll /gpfs/data/ukb-share/extracted_phenotypes/DepAll/DepAll_observed.pheno daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.txt T DepAll/DepAll_observed.pheno OR SNP CHR BP A1 A2 P or FRQ_A_45396:0.05
+
+sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/new_phen_format.sh 1 ICD10Dep ICD10Dep /gpfs/data/ukb-share/extracted_phenotypes/ICD10Dep/ICD10Dep_observed.pheno daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.txt T ICD10Dep/ICD10Dep_observed.pheno OR SNP CHR BP A1 A2 P or FRQ_A_45396:0.05
+
+sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/new_phen_format.sh 1 LifetimeMDD LifetimeMDD /gpfs/data/ukb-share/extracted_phenotypes/LifetimeMDD/LifetimeMDD_observed.pheno daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.txt T LifetimeMDD/LifetimeMDD_observed.pheno OR SNP CHR BP A1 A2 P or FRQ_A_45396:0.05
+
+sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/new_phen_format.sh 1 Psypsy Psypsy /gpfs/data/ukb-share/extracted_phenotypes/Psypsy/Psypsy_observed.pheno daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.txt T Psypsy/Psypsy_observed.pheno OR SNP CHR BP A1 A2 P or FRQ_A_45396:0.05
+
+sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/new_phen_format.sh 1 DepAll DepAll /gpfs/data/ukb-share/extracted_phenotypes/DepAll/DepAll_observed.pheno daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.txt T GPpsy/GPpsy_observed.pheno OR SNP CHR BP A1 A2 P or FRQ_A_45396:0.05

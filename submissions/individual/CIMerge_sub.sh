@@ -11,4 +11,4 @@ module load R/4.3.1
 
 CODE="/gpfs/data/ukb-share/dahl/ophelia/hairpin/code/merge_CI.R"
 
-Rscript ${CODE} $1 $2 $3 $4
+Rscript ${CODE} $1 $2 $3 $4 $5

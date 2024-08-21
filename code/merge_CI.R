@@ -3,8 +3,8 @@ library(dplyr)
 
 args <- commandArgs(trailingOnly = TRUE)
 
-if (length(args)!=4) {
-  stop("Four arguments must be supplied", call.=FALSE)
+if (length(args)!=5) {
+  stop("Five arguments must be supplied", call.=FALSE)
 }
 
 phen_path <- toString(args[1])

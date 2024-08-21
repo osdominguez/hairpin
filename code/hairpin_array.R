@@ -39,9 +39,9 @@ pcs <- scan(file.path(txt_path, '/pcs.txt'), what = integer())
 pvals_list <- scan(file.path(txt_path, '/pvalues.txt'), what = character())
 
 if (boot) {
-  hfile <- paste0(tmp_dir, phen_name, "_", as, "_", pop, "_bootstrap_", run_n, ".table")
+  hfile <- paste0(tmp_dir, phen_name, "_", as, "_bootstrap_", run_n, ".table")
 } else {
-  hfile = paste0(out_dir, phen_name, "_", as, "_", pop, "_base.table")
+  hfile = paste0(out_dir, phen_name, "_", as, "_base.table")
 }
 
 if (file.exists(hfile)) {
@@ -96,7 +96,6 @@ for (pc in pcs) {
       full_df <- merge(full_df, pheno_df, by =  c("FID", "IID"))
       full_df <- full_df %>%  select(-c("FID","IID")) 
       
-      full_df <- full_df %>% select(-c(FID, IID))
       full_df <- full_df[, !grepl("even|odd", colnames(full_df))] 
 
       # Regress based on the ID of the phenotype (as shown up in the .pheno file)
@@ -159,8 +158,8 @@ for (pc in pcs) {
 
   if (boot) {
     hairpin_df <- hairpin_df %>% mutate(replicate = run_n)
-    write.table(hairpin_df,  file = paste0(tmp_dir, phen_name, "_", as, "_", pop, "_bootstrap_", run_n, ".table"), row.names = F, col.names = F, quote = F, append=TRUE)
+    write.table(hairpin_df,  file = paste0(tmp_dir, phen_name, "_", as, "_bootstrap_", run_n, ".table"), row.names = F, col.names = F, quote = F, append=TRUE)
   } else {
-    write.table(hairpin_df, file = paste0(out_dir, phen_name, "_", as, "_", pop, "_base.table"), row.names = F, col.names = F, quote = F, append=TRUE)
+    write.table(hairpin_df, file = paste0(out_dir, phen_name, "_", as, "_base.table"), row.names = F, col.names = F, quote = F, append=TRUE)
   }
 }
