@@ -1,8 +1,10 @@
-/gpfs/data/ukb-share/extracted_phenotypes/EA4/EA4.pheno EA4_NUKB EA4
-/gpfs/data/ukb-share/extracted_phenotypes/EA3/EA3.pheno EA3_NUKB EA3
 /gpfs/data/ukb-share/extracted_phenotypes/GPpsy/GPpsy_observed.pheno GPpsy GPpsy
 /gpfs/data/ukb-share/extracted_phenotypes/DepAll/DepAll_observed.pheno DepAll DepAll
 /gpfs/data/ukb-share/extracted_phenotypes/ICD10Dep/ICD10Dep_observed.pheno ICD10Dep ICD10Dep
 /gpfs/data/ukb-share/extracted_phenotypes/LifetimeMDD/LifetimeMDD_observed.pheno LifetimeMDD LifetimeMDD
 /gpfs/data/ukb-share/extracted_phenotypes/Psypsy/Psypsy_observed.pheno Psypsy Psypsy
-/gpfs/data/ukb-share/extracted_phenotypes/DepAll/DepAll_observed.pheno DepAll DepAll
+/gpfs/data/ukb-share/extracted_phenotypes/ICD10Dep/ICD10Dep_imputed.pheno ICD10Dep_imputed ICD10Dep
+/gpfs/data/ukb-share/extracted_phenotypes/LifetimeMDD/LifetimeMDD_imputed.pheno LifetimeMDD_imputed LifetimeMDD
+/gpfs/data/ukb-share/extracted_phenotypes/GPpsy/GPpsy_imputed.pheno GPpsy_imputed GPpsy
+/gpfs/data/ukb-share/extracted_phenotypes/Psypsy/Psypsy_imputed.pheno Psypsy_imputed Psypsy
+/gpfs/data/ukb-share/extracted_phenotypes/DepAll/DepAll_imputed.pheno DepAll_imputed DepAll

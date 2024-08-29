@@ -34,4 +34,12 @@ sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/new_phen_format.sh 1 
 
 sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/new_phen_format.sh 1 Psypsy Psypsy /gpfs/data/ukb-share/extracted_phenotypes/Psypsy/Psypsy_observed.pheno daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.txt T Psypsy/Psypsy_observed.pheno OR SNP CHR BP A1 A2 P or FRQ_A_45396:0.05
 
-sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/new_phen_format.sh 1 DepAll DepAll /gpfs/data/ukb-share/extracted_phenotypes/DepAll/DepAll_observed.pheno daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.txt T GPpsy/GPpsy_observed.pheno OR SNP CHR BP A1 A2 P or FRQ_A_45396:0.05
+sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/new_phen_format.sh 1 GPpsy_imputed GPpsy /gpfs/data/ukb-share/extracted_phenotypes/GPpsy/GPpsy_imputed.pheno daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.txt F GPpsy/GPpsy_imputed.pheno OR SNP CHR BP A1 A2 P or FRQ_A_45396:0.05
+
+sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/new_phen_format.sh 1 ICD10Dep_imputed ICD10Dep /gpfs/data/ukb-share/extracted_phenotypes/ICD10Dep/ICD10Dep_imputed.pheno daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.txt F ICD10Dep/ICD10Dep_imputed.pheno OR SNP CHR BP A1 A2 P or FRQ_A_45396:0.05
+
+sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/new_phen_format.sh 1 LifetimeMDD_imputed LifetimeMDD /gpfs/data/ukb-share/extracted_phenotypes/LifetimeMDD/LifetimeMDD_imputed.pheno daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.txt F LifetimeMDD/LifetimeMDD_imputed.pheno OR SNP CHR BP A1 A2 P or FRQ_A_45396:0.05
+
+sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/new_phen_format.sh 1 Psypsy_imputed Psypsy /gpfs/data/ukb-share/extracted_phenotypes/Psypsy/Psypsy_imputed.pheno daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.txt F Psypsy/Psypsy_imputed.pheno OR SNP CHR BP A1 A2 P or FRQ_A_45396:0.05
+
+sbatch /gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/new_phen_format.sh 1 DepAll_imputed DepAll /gpfs/data/ukb-share/extracted_phenotypes/DepAll/DepAll_imputed.pheno daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.txt F DepAll/GPpsy_imputed.pheno OR SNP CHR BP A1 A2 P or FRQ_A_45396:0.05

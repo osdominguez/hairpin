@@ -5,7 +5,7 @@
 #SBATCH --mem=20gb
 #SBATCH --output=/home/osdominguez/output/hairpin_PGS/PGS_tables_master_%a_%A.out
 #SBATCH --error=/home/osdominguez/output/hairpin_PGS/PGS_tables_master_%a_%A.err
-#SBATCH --array=1-8%2
+#SBATCH --array=1-20%2
 
 SCRIPT=/gpfs/data/ukb-share/dahl/ophelia/hairpin/code/tables.R
 TXT_PATH=/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/tables.txt

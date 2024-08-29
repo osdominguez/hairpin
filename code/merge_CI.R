@@ -25,14 +25,4 @@ for (as in c("as", "noas")) {
   }
 
   write.table(boot_df,  file = paste0(out_dir, phen_name, "_", as, "_bootstrap.table"), row.names = F, quote = F) 
-
-  confint_table <- boot_df %>% 
-    group_by(phenotype, pc_num, threshold) %>% 
-    summarise(r2_max = mean(r2, na.rm = TRUE) + (1.96 * sd(r2, na.rm = TRUE)), 
-              r2_min = mean(r2,  na.rm = TRUE) - (1.96 * sd(r2, na.rm = TRUE)),
-              thetaeo_max = mean(theta_eo, na.rm = TRUE) + (1.96 * sd(theta_eo, na.rm = TRUE)),
-              thetaeo_min = mean(theta_eo, na.rm = TRUE) - (1.96 * sd(theta_eo, na.rm = TRUE)),
-              num_reps = n())
-
-  write.table(confint_table, file = paste0(out_dir, phen_name, "_", as, "_confint.table"), row.names = F, quote = F)
 }

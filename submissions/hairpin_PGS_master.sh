@@ -5,7 +5,7 @@
 #SBATCH --mem=10gb
 #SBATCH --output=/home/osdominguez/output/hairpin_PGS/hairpin_PGS_%a_%A.out
 #SBATCH --error=/home/osdominguez/output/hairpin_PGS/hairpin_PGS_%a_%A.err
-#SBATCH --array=1-5920%200
+#SBATCH --array=1-7400%200
 
 TXT_PATH=/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/combinations.txt
 
@@ -120,6 +120,6 @@ hairpin_pgs odd white_brit_unrelated/ukb_imp_chr0O_v3_whitebrit_unrelated_QC WBR
 hairpin_pgs all white_brit_unrelated/ukb_imp_chr0_v3_whitebrit_unrelated_QC WBRT
 
 # PGS in white european
-hairpin_pgs even white_euro/ukb_chr0E_WEUR WEUR
-hairpin_pgs odd white_euro/ukb_chr0O_WEUR WEUR
-hairpin_pgs all white_euro/ukb_chr0_WEUR WEUR
+hairpin_pgs even white_euro/ukb_chr0E WEUR
+hairpin_pgs odd white_euro/ukb_chr0O WEUR
+hairpin_pgs all white_euro/ukb_chr0 WEUR

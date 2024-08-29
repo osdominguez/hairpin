@@ -1,8 +1,10 @@
-EA4_NUKB
-EA3_NUKB
-GPpsy
+ICD10Dep_imputed
+LifetimeMDD_imputed
+GPpsy_imputed
+Psypsy_imputed
+DepAll_imputed
 DepAll
-ICD10Dep
-LifetimeMDD
 Psypsy
-DepAll
+LifetimeMDD
+ICD10Dep
+GPpsy
