@@ -6,6 +6,7 @@ library(latex2exp)
 library(egg)
 
 pcs_oi <- c(0, 3, 5, 10, 20, 40)
+q <- qnorm(0.025)
 
 gls_thin <- function(z_df, md) {
   i <- 2
@@ -366,7 +367,7 @@ all_gls_phen_flip <- function(z_df, phen, as = "as", pop = "WBRT", pcs = unique(
     p <- ggplot(z_df, aes(x=theta_eo, y=r2, colour = factor(pc_num) )) + 
         geom_point(aes(pch = on_line, alpha = on_line, size = on_line)) +
         geom_line(aes(linetype = "solid", colour = factor(pc_num))) +
-        geom_abline(aes(linetype = "longdash", colour=factor(pc_num), slope = beta, intercept = 0), linewidth = 0.25) + 
+        geom_abline(aes(linetype = "longdash", colour=factor(pc_num), slope = 1/beta, intercept = 0), linewidth = 0.25) + 
         labs(colour = "pc", size = "on_line", pch = "on_line") +
         guides(alpha="none") + 
         ggtitle(title) + 
@@ -386,7 +387,10 @@ all_gls_phen_flip <- function(z_df, phen, as = "as", pop = "WBRT", pcs = unique(
 }
 
 all_gls_facet <- function(z_df, phen, as = "as", pop = "WBRT", pcs = unique(z_df$pc_num)) {
-  
+
+  # Produces a facet wrapped plot of the hairpin for the given phenotype and pcs
+  # 6 pc's are reccomended for a nice plot, the default 6 are stored in pcs_oi
+
   if (as == "as") {
     title <- paste0("Hairpin for ", phen, " (GLS), in ", pop, " correcting for assessment center")
   } else {
@@ -408,27 +412,44 @@ all_gls_facet <- function(z_df, phen, as = "as", pop = "WBRT", pcs = unique(z_df
     geom_errorbar(aes(ymin=as.numeric(theta_eo)-as.numeric(sd_teo), ymax=as.numeric(theta_eo)+as.numeric(sd_teo)), linewidth = 0.25) +
     theme_classic() +
     scale_color_manual(values = c("on" = "black", "off" = "red"))
-    
   
   return(p + facet_wrap(vars(pc_num), ncol=3))
   
 }
 
-
-all_all_gls_phen <- function(zlist, as = "as", nrow = 2, ncol = 2) {
-  p_df <- zlist[[1]]
+all_all_gls_phen <- function(zlist, as = "as", pop = "WBRT", nrow = 2, ncol = 2) {
   
-  for (i in 2:length(zlist)) {
-    p_df <- rbind(p_df, zlist[[i]])
+  # Produces a facet wrapped plot of the plots for all_gls_phen for the phenotypes found in zlist
+  # zlist may be a list or a dataframe
+  
+  if (as == "as") {
+    title <- paste0("Hairpin (GLS), in ", pop, " correcting for assessment center")
+  } else {
+    title <- paste0("Hairpin (GLS), in ", pop, "w/out correcting for assessment center")
   }
+  
+  if (is.data.frame(zlist)) {
+    p_df <- zlist
+  } else {
+    p_df <- zlist[[1]]
+    
+    for (i in 2:length(zlist)) {
+      p_df <- rbind(p_df, zlist[[i]])
+    }
+  }
+  
+  rm(zlist)
   
   p <- ggplot(p_df, aes(x=r2, y=theta_eo, colour = factor(pc_num) )) + 
     geom_point(aes(pch = on_line, alpha = on_line, size = on_line)) +
     geom_line(aes(linetype = "solid", colour = factor(pc_num))) +
-    labs(colour = "pc", size = "on_line", pch = "on_line") + 
     geom_abline(aes(linetype = "longdash", colour=factor(pc_num), slope = beta, intercept = 0), linewidth = 0.25) + 
+    labs(colour = "pc", size = "on_line", pch = "on_line") + 
+    ggtitle(title) +
     xlim(min(p_df$r2, 0), NA) + 
     ylim(min(p_df$theta_eo, 0), NA) + 
+    xlab(TeX("$\\r^2$")) + 
+    ylab(TeX("$\\theta_{eo}$")) +
     scale_shape_manual(values = c("on" = 1, "off" = 16)) +
     scale_linetype_discrete(labels=c('GLS', 'Data')) +
     scale_color_hue(l=40, c=100) +
@@ -436,27 +457,44 @@ all_all_gls_phen <- function(zlist, as = "as", nrow = 2, ncol = 2) {
     scale_size_manual(values = c("on" = 1.5, "off" = 3)) +
     guides(alpha="none") + 
     theme_classic() +
-    ylab(TeX("$\\theta_{eo}$")) +
-    xlab(TeX("$\\r^2$")) + 
+    
     scale_colour_brewer(palette = "Paired")
   
   return(p + facet_wrap(vars(phenotype), ncol=ncol, nrow = 2, scales = "free"))
 }
 
-all_all_gls_phen_inv <- function(zlist, as = "as", nrow = 2, ncol = 2) {
-  p_df <- zlist[[1]]
+all_all_gls_phen_flip <- function(zlist, as = "as", pop = "WBRT", nrow = 2, ncol = 2) {
   
-  for (i in 2:length(zlist)) {
-    p_df <- rbind(p_df, zlist[[i]])
+  # Produces a all_all_gls_phen plot with the axis flipped
+  
+  if (as == "as") {
+    title <- paste0("Hairpin (GLS), in ", pop, " correcting for assessment center")
+  } else {
+    title <- paste0("Hairpin (GLS), in ", pop, "w/out correcting for assessment center")
   }
   
-  p <- ggplot(p_df, aes(y=r2, x=theta_eo, colour = factor(pc_num) )) + 
+  if (is.data.frame(zlist)) {
+    p_df <- zlist
+  } else {
+    p_df <- zlist[[1]]
+    
+    for (i in 2:length(zlist)) {
+      p_df <- rbind(p_df, zlist[[i]])
+    }
+  }
+  
+  rm(zlist)
+  
+  p <- ggplot(p_df, aes(x=theta_eo, y=r2, colour = factor(pc_num) )) + 
     geom_point(aes(pch = on_line, alpha = on_line, size = on_line)) +
     geom_line(aes(linetype = "solid", colour = factor(pc_num))) +
-    labs(colour = "pc", size = "on_line", pch = "on_line") + 
     geom_abline(aes(linetype = "longdash", colour=factor(pc_num), slope = 1/beta, intercept = 0), linewidth = 0.25) + 
+    labs(colour = "pc", size = "on_line", pch = "on_line") + 
+    ggtitle(title) +
     xlim(min(p_df$theta_eo, 0), NA) + 
     ylim(min(p_df$r2, 0), NA) + 
+    xlab(TeX("$\\theta_{eo}$")) +
+    ylab(TeX("$\\r^2$")) + 
     scale_shape_manual(values = c("on" = 1, "off" = 16)) +
     scale_linetype_discrete(labels=c('GLS', 'Data')) +
     scale_color_hue(l=40, c=100) +
@@ -464,12 +502,64 @@ all_all_gls_phen_inv <- function(zlist, as = "as", nrow = 2, ncol = 2) {
     scale_size_manual(values = c("on" = 1.5, "off" = 3)) +
     guides(alpha="none") + 
     theme_classic() +
-    xlab(TeX("$\\theta_{eo}$")) +
-    ylab(TeX("$\\r^2$")) +
+    
     scale_colour_brewer(palette = "Paired")
   
   return(p + facet_wrap(vars(phenotype), ncol=ncol, nrow = 2, scales = "free"))
 }
+
+indiv_dist_CI <- function(z_df, phen, pc_n, as="as") {
+  
+  # Produces a plot for the mean distance on the y-axis and r2 on the x
+  # This is mean to visualize what is happening with the linearity test
+  
+  if (as == "as") {
+    title <- paste0("Hairpin for ", phen, ", PC ", pc_n, "(distance), correcting for assessment center 95% CI")
+  } else {
+    title <- paste0("Hairpin for ", phen, ", PC ", pc_n, "(distance), w/out correcting for assessment center 95% CI")
+  }
+  
+  z_df <- z_df %>% filter(pc_num == pc_n)
+  
+  p <- ggplot(z_df, aes(x=r2, y=mean_dist, colour = on_line, label = threshold)) + 
+    geom_line(colour = "black") +
+    geom_point() +
+    geom_text(hjust = 0, vjust = 4, show.legend = FALSE, size = 2.3) +
+    theme_bw()  +
+    labs(title = title, y = "mean distance", x = "R2")  +
+    scale_color_manual(values = c("on" = "black", "off" = "red")) + 
+    geom_abline(intercept = 0, slope = 0, color = "blue", linewidth = .5) +
+    geom_errorbar(aes(ymin=as.numeric(mean_dist)-q*as.numeric(sd_dist), ymax=as.numeric(mean_dist)+q*as.numeric(sd_dist))) +
+    xlim(min(z_df$r2, 0), NA) + 
+    ylim(min(z_df$mean_dist - q*as.numeric(z_df$sd_dist), 0), max(z_df$mean_dist + as.numeric(z_df$sd_dist))) +
+    xlab(TeX("$\\r^2$"))
+    theme_classic() +
+    
+  return(p)
+}
+
+heatmap_gls <- function(z_df, phen, as = "as") {
+  
+  # Produces a heatmap of all the gls runs for a given phenotype
+  # Currently VERY rudimentary
+  
+  if (as == "as") {
+    title <- paste0("Hairpin for ", phen, " (GLS), correcting for assessment center")
+  } else {
+    title <- paste0("Hairpin for ", phen, " (GLS), w/out correcting for assessment center")
+  }
+  
+  ggplot(z_df, aes(factor(threshold), factor(pc_num), fill=on_line, width = 1, height = 1)) +
+    geom_tile() +
+    ggtitle(title) +
+    theme_classic() +
+    scale_fill_manual(values = c("on" = "black", "off" = "red")) +
+    xlab("Threshold") +
+    ylab("pc")
+                         
+}
+
+# For currently not implemented sims...
 
 mains	<- c( 'True Betas', 'Beta Estimates, Unadjusted', 'Beta Estimates, 1 PC Adjusted', 'Beta Estimates, 10 PC Adjusted' , 'Beta Estimates, True Pop Adjusted' )
 
@@ -622,48 +712,4 @@ all_gls_phen_sim <- function(z_df, phen, ngen) {
     scale_colour_brewer(palette = "Paired")
   
   return(p)
-}
-
-indiv_dist_sd <- function(z_df, phen, pc_n, as="as") {
-  
-  if (as == "as") {
-    title <- paste0("Hairpin for ", phen, ", PC ", pc_n, "(distance), w/ assessment center. Labeled by thresh")
-  } else {
-    title <- paste0("Hairpin for ", phen, ", PC ", pc_n, "(distance), w/out assessment center. Labeled by thresh")
-  }
-  
-  z_df <- z_df %>% filter(pc_num == pc_n)
-  
-  p <- ggplot(z_df, aes(x=r2, y=mean_dist, colour = on_line, label = threshold)) + 
-    geom_line(colour = "black") +
-    geom_point() +
-    geom_text(hjust = 0, vjust = 4, show.legend = FALSE, size = 2.3) +
-    theme_bw()  +
-    labs(title = title, y = "mean distance", x = "R2")  +
-    scale_color_manual(values = c("on" = "black", "off" = "red")) + 
-    geom_abline(intercept = 0, slope = 0, color = "blue", linewidth = .5) +
-    geom_errorbar(aes(ymin=as.numeric(mean_dist)-as.numeric(sd_dist), ymax=as.numeric(mean_dist)+as.numeric(sd_dist))) +
-    xlim(min(z_df$r2, 0), NA) + 
-    ylim(min(z_df$mean_dist - as.numeric(max(as.numeric(z_df$sd_dist))), 0), max(z_df$mean_dist + as.numeric(z_df$sd_dist))) +
-    theme_classic() +
-    xlab(TeX("$\\r^2$"))
-  
-  return(p)
-}
-
-heatmap_gls <- function(z_df, phen, as = "as") {
-  if (as == "as") {
-    title <- paste0("Hairpin for ", phen, ", correcting for assessment center")
-  } else {
-    title <- paste0("Hairpin for ", phen, ", w/out correcting for assessment center")
-  }
-  
-  ggplot(z_df, aes(factor(threshold), factor(pc_num), fill=on_line, width = 1, height = 1)) +
-    geom_tile() +
-    ggtitle(title) +
-    theme_classic() +
-    scale_fill_manual(values = c("on" = "black", "off" = "red")) +
-    xlab("Threshold") +
-    ylab("pc")
-                         
 }
