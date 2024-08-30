@@ -3,8 +3,19 @@ rm(list=ls())
 library(dplyr)
 library(ggplot2)
 library(fdrtool)
+library(readr)
 
-table_dir <- "/gpfs/data/ukb-share/dahl/ophelia/hairpin/plotting"
+args <- commandArgs(trailingOnly = TRUE)
+
+if (length(args) < 3) {
+  stop("Three arguments must be supplied", call.=FALSE)
+} 
+
+phen <- toString(args[1])
+as <- toString(args[2])
+pop <- toString(args[3])
+
+table_dir <- "/gpfs/data/ukb-share/dahl/ophelia/hairpin/plotting/"
 blank_table <- data.frame(matrix(ncol=10, nrow=0, dimnames=list(NULL, c("phenotype", "pc_num", "threshold", "sd_dist", "se_dist", "mean_dist", "sd_teo", "z_jk", "pz", "on_line"))))
 
 get_epsilon <- function(full_boot) {
@@ -270,3 +281,7 @@ ztable <- function(phen_name, as, pop, method = "backward", tail = "two") {
   return(f_df)
   
 }
+
+ztab_phen <- ztable(phen, as, pop)
+
+write.table(ztab_phen, file = paste0(table_dir, pop, "/", "ztab_", phen, "_", as, ".table"), row.names = F, quote = F)

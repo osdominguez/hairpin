@@ -57,6 +57,8 @@ rm ${txt_dir}/linearity.txt
 sbatch --wait ${txt_dir}/format_linearity_txt.sh
 rm ${txt_dir}/tables.txt
 sbatch --wait ${txt_dir}/format_tables_txt.sh
+rm ${txt_dir}/merge.txt
+sbatch --wait ${txt_dir}/format_merge_txt.sh
 echo "successfully formatted txt files"
 
 

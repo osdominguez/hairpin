@@ -2,7 +2,7 @@
 
 #SBATCH --job-name=Hairpin_linearity
 #SBATCH --time=12:00:00
-#SBATCH --mem=10gb
+#SBATCH --mem=20gb
 #SBATCH --output=/home/osdominguez/output/linearity/linearity_%a_%A.out
 #SBATCH --error=/home/osdominguez/output/linearity/linearity_%a_%A.err
 #SBATCH --array=1-400%40
@@ -16,4 +16,4 @@ module load R/4.3.1
 
 readarray -t parms < <(awk -v row="${SLURM_ARRAY_TASK_ID}" 'NR == row {for(i=1; i<=NF; i++) print $i}' "${TXT_PATH}")
 
-Rscript /gpfs/data/ukb-share/dahl/ophelia/hairpin/code/linearity.R ${parms[2]} ${parms[1]} ${parms[0]} 100 
+Rscript /gpfs/data/ukb-share/dahl/ophelia/hairpin/code/linearity.R ${parms[0]} ${parms[1]} ${parms[2]} 

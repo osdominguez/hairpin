@@ -61,7 +61,7 @@ fi
 
 # Run hairpin workflow
 echo "running hairpin PGS..."
-sbatch --wait ${sh_dir}/hairpin_PGS_master.sh
+sbatch --wait ${sh_dir}/hairpin_PGS.sh
 echo "finished running hairpin PGS"
 
 echo "running tabling for hairpin PGS..."
@@ -69,11 +69,11 @@ sbatch --wait ${sh_dir}/tables.sh
 echo "finished tabling hairpin PGS"
 
 echo "running hairpin..."
-sbatch --wait ${sh_dir}/hairpin_master.sh
+sbatch --wait ${sh_dir}/hairpin.sh
 echo "finished running hairpin"
 
 echo "combining hairpin bootstaps..."
-sbatch --wait ${sh_dir}/merge_master.sh
+sbatch --wait ${sh_dir}/merge.sh
 echo "finished combining hairpin bootstraps"
 
 echo "testing linearity..."
