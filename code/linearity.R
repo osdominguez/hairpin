@@ -2,7 +2,7 @@ rm(list=ls())
 
 library(dplyr)
 library(ggplot2)
-library(fdrtool)
+#library(fdrtools)
 library(readr)
 
 args <- commandArgs(trailingOnly = TRUE)
@@ -16,6 +16,7 @@ as <- toString(args[2])
 pop <- toString(args[3])
 
 table_dir <- "/gpfs/data/ukb-share/dahl/ophelia/hairpin/plotting/"
+
 blank_table <- data.frame(matrix(ncol=10, nrow=0, dimnames=list(NULL, c("phenotype", "pc_num", "threshold", "sd_dist", "se_dist", "mean_dist", "sd_teo", "z_jk", "pz", "on_line"))))
 
 get_epsilon <- function(full_boot) {
@@ -122,8 +123,8 @@ get_dist <- function(hair, pmax, omega_j, rep = 0, tail) {
     
     if (tail == "two") {
       dist_jk <- line_j[k] - teo
-    } else if (tail == "half"){
-      dist_jk <- abs(line_j[k] - teo)
+    # } else if (tail == "half"){
+      # dist_jk <- abs(line_j[k] - teo)
     } else {
       dist_jk <- abs(line_j[k] - teo)
     }
@@ -208,8 +209,9 @@ get_zvals <- function(hair, boot, method, tail, pmax = NULL, prev = NULL) {
   
   if (tail == "two") {
     z_table <- z_table %>% mutate(pz = pnorm(z_jk, mean = 0, sd = 1, lower.tail = TRUE))
-  } else if (tail == "half") {
-    z_table <- z_table %>% mutate(pz = phalfnorm(z_jk, theta = sd2theta(1), lower.tail = FALSE))
+  # only possible if the library fdrtools is installed:
+  # } else if (tail == "half") {
+    # z_table <- z_table %>% mutate(pz = phalfnorm(z_jk, theta = sd2theta(1), lower.tail = FALSE))
   } else {
     z_table <- z_table %>% mutate(pz = pnorm(z_jk, mean = 0, sd = 1, lower.tail = FALSE))
   }
@@ -248,7 +250,14 @@ ztable <- function(phen_name, as, pop, method = "backward", tail = "two") {
   
   # returns the full dataframe of the given hairpin tested at gls
   
-  hairpin_df <- read.table(paste0(table_dir, pop, "/", phen_name, "_", as, "_base.table"), header = TRUE)
+  hair_file <- paste0(table_dir, pop, "/", phen_name, "_", as, "_base.table")
+  boot_file <- paste0(table_dir, pop, "/", phen_name, "_", as, "_bootstrap.table")
+
+  if (!file.exists(hair_file) || !file.exists(boot_file)) {
+    stop('ERROR: either the bootstrap or hairpin table does not exist')
+  }
+
+  hairpin_df <- read.table(hair_file, header = TRUE)
   boot_df <- read.table(paste0(table_dir, pop, "/", phen_name, "_", as, "_bootstrap.table"), header = TRUE)
 
   hairpin_df <- na.omit(hairpin_df) %>% filter(phenotype == phen_name)
@@ -284,4 +293,6 @@ ztable <- function(phen_name, as, pop, method = "backward", tail = "two") {
 
 ztab_phen <- ztable(phen, as, pop)
 
-write.table(ztab_phen, file = paste0(table_dir, pop, "/", "ztab_", phen, "_", as, ".table"), row.names = F, quote = F)
+ztab_file <- paste0(table_dir, pop, "/", "ztab_", phen, "_", as, ".table")
+
+write.table(ztab_phen, file = ztab_file, row.names = F, quote = F)
