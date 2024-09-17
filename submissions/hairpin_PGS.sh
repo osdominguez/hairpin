@@ -123,3 +123,8 @@ hairpin_pgs all white_brit_unrelated/ukb_imp_chr0_v3_whitebrit_unrelated_QC WBRT
 hairpin_pgs even white_euro/ukb_chr0E WEUR
 hairpin_pgs odd white_euro/ukb_chr0O WEUR
 hairpin_pgs all white_euro/ukb_chr0 WEUR
+
+# PGS in white british unrelated but different chromosome pairings
+hairpin_pgs even WBRT_RND_1/ukbchr0R1 WBRT_RND_1
+hairpin_pgs odd WBRT_RND_1/ukbchr0R2 WBRT_RND_1
+hairpin_pgs all WBRT_RND_1/ukbchr0 WBRT_RND_1
