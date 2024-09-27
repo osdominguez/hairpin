@@ -2,7 +2,6 @@ rm(list=ls())
 
 library(dplyr)
 library(ggplot2)
-#library(fdrtools)
 library(readr)
 
 args <- commandArgs(trailingOnly = TRUE)
@@ -123,8 +122,6 @@ get_dist <- function(hair, pmax, omega_j, rep = 0, tail) {
     
     if (tail == "two") {
       dist_jk <- line_j[k] - teo
-    # } else if (tail == "half"){
-      # dist_jk <- abs(line_j[k] - teo)
     } else {
       dist_jk <- abs(line_j[k] - teo)
     }
@@ -209,9 +206,6 @@ get_zvals <- function(hair, boot, method, tail, pmax = NULL, prev = NULL) {
   
   if (tail == "two") {
     z_table <- z_table %>% mutate(pz = pnorm(z_jk, mean = 0, sd = 1, lower.tail = TRUE))
-  # only possible if the library fdrtools is installed:
-  # } else if (tail == "half") {
-    # z_table <- z_table %>% mutate(pz = phalfnorm(z_jk, theta = sd2theta(1), lower.tail = FALSE))
   } else {
     z_table <- z_table %>% mutate(pz = pnorm(z_jk, mean = 0, sd = 1, lower.tail = FALSE))
   }
@@ -258,7 +252,7 @@ ztable <- function(phen_name, as, pop, method = "backward", tail = "two") {
   }
 
   hairpin_df <- read.table(hair_file, header = TRUE)
-  boot_df <- read.table(paste0(table_dir, pop, "/", phen_name, "_", as, "_bootstrap.table"), header = TRUE)
+  boot_df <- read.table(boot_file, header = TRUE)
 
   hairpin_df <- na.omit(hairpin_df) %>% filter(phenotype == phen_name)
   boot_df <- na.omit(boot_df) %>% filter(phenotype == phen_name)

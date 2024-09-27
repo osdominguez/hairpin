@@ -60,14 +60,9 @@ sbatch --wait ${txt_dir}/format_tables_txt.sh
 rm ${txt_dir}/merge.txt
 sbatch --wait ${txt_dir}/format_merge_txt.sh
 echo "successfully formatted txt files"
-
-
-if [[ ${new} == 1 ]]; then
-    echo "reformatting scripts..."
-    sbatch --wait ${sh_dir}/reformat_scripts.sh ${phen_name} ${phen_path} ${phen_id}
-
-    echo "successfully formatted scripts"
-fi
+echo "reformatting scripts..."
+sbatch --wait ${sh_dir}/reformat_scripts.sh ${phen_name} ${phen_path} ${phen_id}
+echo "successfully formatted scripts"
 
 # For different bed files, ignore for now
 #echo new_bed_info >> ${txt_dir}/sep.txt

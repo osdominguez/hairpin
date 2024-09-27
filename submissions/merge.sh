@@ -5,7 +5,7 @@
 #SBATCH --mem=40gb
 #SBATCH --output=/home/osdominguez/output/hairpin_PGS/merge_%a_%A.out
 #SBATCH --error=/home/osdominguez/output/hairpin_PGS/merge_%a_%A.err
-#SBATCH --array=1-20%1
+#SBATCH --array=1-60%2
 
 SCRIPT="/gpfs/data/ukb-share/dahl/ophelia/hairpin/code/merge.R"
 TXT_PATH=/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/merge.txt

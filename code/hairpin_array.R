@@ -35,6 +35,9 @@ txt_path <- file.path('/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files')
 out_dir <- paste0("/gpfs/data/ukb-share/dahl/ophelia/hairpin/plotting/", pop,"/")
 tmp_dir <- paste0("/scratch/osdominguez/temp_boot/", pop,"/")
 
+dir.create(out_dir, showWarnings = FALSE)
+dir.create(tmp_dir, showWarnings = FALSE)
+
 pcs <- scan(file.path(txt_path, '/pcs.txt'), what = integer())
 pvals_list <- scan(file.path(txt_path, '/pvalues.txt'), what = character())
 
@@ -52,9 +55,9 @@ if (file.exists(hfile)) {
   if (boot) {
     hairpin_df <- data.frame(matrix(ncol=6, nrow=0, dimnames=list(NULL, c("phenotype", "threshold", "pc_num", "r2", "theta_eo", "replicate"))))
   } else {
-  hairpin_df <- data.frame(matrix(ncol=5, nrow=0, dimnames=list(NULL, c("phenotype", "threshold", "pc_num", "r2", "theta_eo"))))  
+    hairpin_df <- data.frame(matrix(ncol=5, nrow=0, dimnames=list(NULL, c("phenotype", "threshold", "pc_num", "r2", "theta_eo"))))  
   }
-  write.table(hairpin_df, hfile, row.names = F, quote = F)
+    write.table(hairpin_df, hfile, row.names = F, quote = F)
 }
 
 #read in phenotype file 
@@ -72,10 +75,16 @@ for (pc in pcs) {
   
   pc_df <- pc_df %>% select(pc_header(pc))
   
+  prs_table <- paste0("/scratch/osdominguez/tables/", pop, "/", phen_name, pc, as, ".table")
+
+  if (!file.exists(prs_table)) {
+    next
+  }
+  
   for (pval in pvals_list) {
     
-    prs_df <- read.table(paste0("/scratch/osdominguez/tables/", pop, "/", phen_name, pc, as, ".table"), header=TRUE, sep = " ")
-  
+    prs_df <- read.table(prs_table, header=TRUE, sep = " ")
+    
     # if a bootstrap is being called for resample the dataframe with a set seed 
     if (run_n != 0) {
       # set the seed and resample the dataframe
@@ -85,15 +94,15 @@ for (pc in pcs) {
     
     # select the FID and IID of participants. Also select the column names with the pvalue of interest in it
     prs_subset <- prs_df %>% select(c(FID, IID, contains(pval)))       
-    
+
     rm(prs_df)
 
     # if we have the even, odd, and all columns go forward with getting r2 and thetaeo
     if (any(grepl("even", colnames(prs_subset))) && any(grepl("odd", colnames(prs_subset))) && any(grepl("all", colnames(prs_subset))))  {
             
       # use the FID & IID columns to merge the dataframes
-      full_df <- merge(pc_df, prs_subset, by = c("FID", "IID"))
-      full_df <- merge(full_df, pheno_df, by =  c("FID", "IID"))
+      full_df <- merge(pc_df, prs_subset)
+      full_df <- merge(full_df, pheno_df)
       full_df <- full_df %>%  select(-c("FID","IID")) 
       
       full_df <- full_df[, !grepl("even|odd", colnames(full_df))] 
@@ -113,7 +122,7 @@ for (pc in pcs) {
       rm(full_df)
 
       # make even and odd datafranes
-      full_df <- merge(pc_df, prs_subset, by = c("FID", "IID"))
+      full_df <- merge(pc_df, prs_subset)
       full_df <- full_df %>%  select(-c("FID","IID"))
       even_df <- full_df[, !grepl("all|odd", colnames(full_df))]
       odd_df <- full_df[, !grepl("all|even", colnames(full_df))]
