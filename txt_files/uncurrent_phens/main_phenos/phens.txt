@@ -1,0 +1,10 @@
+height
+BMI
+LDL
+WHRadjBMI
+EA3
+EA4
+EA3_NUKB
+EA4_NUKB
+days_phys
+T2D

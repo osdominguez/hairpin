@@ -1,0 +1,9 @@
+GIANT_HEIGHT_new_R.csv F EA4/EA4.pheno BETA RSID CHR POS EFFECT_ALLELE OTHER_ALLELLE P beta height_on_EA4 EFFECT_ALLELE_FREQ:0.05
+GIANT_HEIGHT_new_R.csv T T2D/T2D.pheno BETA RSID CHR POS EFFECT_ALLELE OTHER_ALLELLE P beta height_on_T2D EFFECT_ALLELE_FREQ:0.05
+GIANT_HEIGHT_new_R.csv F BMI/BMI674178.pheno BETA RSID CHR POS EFFECT_ALLELE OTHER_ALLELLE P beta height_on_BMI EFFECT_ALLELE_FREQ:0.05
+EA4_additive_excl_23andMe.txt F Height/Height674178.pheno Beta rsID Chr not_avail Effect_allele Other_allele P beta EA4_on_height EAF_HRC:0.05
+EA4_additive_excl_23andMe.txt T T2D/T2D.pheno Beta rsID Chr not_avail Effect_allele Other_allele P beta EA4_on_T2D EAF_HRC:0.05
+EA4_additive_excl_23andMe.txt F BMI/BMI674178.pheno Beta rsID Chr not_avail Effect_allele Other_allele P beta EA4_on_BMI EAF_HRC:0.05
+SSGAC_EduYears_Rietveld2013_publicrelease.txt F Height/Height674178.pheno Beta MarkerName not_avail not_avail Effect_Allele Other_Allele Pvalue beta EA4_NUKB_on_height EAF:0.05
+SSGAC_EduYears_Rietveld2013_publicrelease.txt T T2D/T2D.pheno Beta MarkerName not_avail not_avail Effect_Allele Other_Allele Pvalue beta EA4_NUKB_on_T2D EAF:0.05
+SSGAC_EduYears_Rietveld2013_publicrelease.txt F BMI/BMI674178.pheno Beta MarkerName not_avail not_avail Effect_Allele Other_Allele Pvalue beta EA4_NUKB_on_BMI EAF:0.05
