@@ -36,7 +36,7 @@ reform_array() {
 }
 
 reform_array "${txt_dir}/combinations.txt" "${sub_dir}/hairpin_PGS.sh" 200
-reform_array "${txt_dir}/hairpin.txt" "${sub_dir}/hairpin.sh" 101
+reform_array "${txt_dir}/hairpin.txt" "${sub_dir}/hairpin.sh" 4
 reform_array "${txt_dir}/linearity.txt" "${sub_dir}/linearity.sh" 5
 reform_array "${txt_dir}/tables.txt" "${sub_dir}/tables.sh" 2
 reform_array "${txt_dir}/merge.txt" "${sub_dir}/merge.sh" 2

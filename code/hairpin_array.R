@@ -1,20 +1,12 @@
 library(dplyr)
 
-# This file is designed to make the hairpin more memory efficient in an array context
-
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) < 7) {
-  stop("Seven arguments must be supplied", call.=FALSE)
-} 
-
-phen_path <- toString(args[1])
-phen_name <- toString(args[2])
-phen_id <- toString(args[3])
-boot <- as.logical(args[4])
-run_n <- as.numeric(args[5])
-as <- toString(args[6])
-pop <- toString(args[7])
+list_vector <- function(l) {
+	res <- c()
+	for (i in 1:length(l)) {
+		res <- c(res, l[[i]])
+	}
+	return(res)
+}
 
 # this function generates the necessary column names for a specific number of pcs
 # R doesn't like the "-" in some of the headers so it changes them to "."
@@ -31,6 +23,31 @@ pc_header <- function(n_pcs) {
   return(cols)
 }
 
+get_ctypes <- function(df, header) {
+	cols <- colnames(df)
+  	cols_i <- which(cols %in% header)
+  	ctypes <- lapply(df[1, ], class)
+  	ctypes <- list_vector(ctypes)
+  	ctypes[setdiff(1:ncol(df), cols_i)] <- "NULL"
+	return(ctypes)
+}
+
+# This file is designed to make the hairpin more memory efficient in an array context
+
+args <- commandArgs(trailingOnly = TRUE)
+
+if (length(args) < 7) {
+  stop("Seven arguments must be supplied", call.=FALSE)
+} 
+
+phen_path <- toString(args[1])
+phen_name <- toString(args[2])
+phen_id <- toString(args[3])
+boot <- as.logical(args[4])
+run_n <- as.numeric(args[5])
+as <- toString(args[6])
+pop <- toString(args[7])
+
 txt_path <- file.path('/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files')
 out_dir <- paste0("/gpfs/data/ukb-share/dahl/ophelia/hairpin/plotting/", pop,"/")
 tmp_dir <- paste0("/scratch/osdominguez/temp_boot/", pop,"/")
@@ -38,8 +55,12 @@ tmp_dir <- paste0("/scratch/osdominguez/temp_boot/", pop,"/")
 dir.create(out_dir, showWarnings = FALSE)
 dir.create(tmp_dir, showWarnings = FALSE)
 
+print('scanning in hairpin run txt files...')
+
 pcs <- scan(file.path(txt_path, '/pcs.txt'), what = integer())
 pvals_list <- scan(file.path(txt_path, '/pvalues.txt'), what = character())
+
+print('finished!')
 
 if (boot) {
   hfile <- paste0(tmp_dir, phen_name, "_", as, "_bootstrap_", run_n, ".table")
@@ -61,8 +82,12 @@ if (file.exists(hfile)) {
 }
 
 #read in phenotype file 
+
+print('reading in phenotype file...')
+
 pheno_df <- read.table(phen_path, header = TRUE)
 
+print('successfully read in phenotype!')
 #### Actually Creating the Hairpin ####
 
 # for each number of principal components, read in the PC file then work on each p-value threshold 
@@ -71,10 +96,16 @@ for (pc in pcs) {
   hairpin_df <- data.frame(matrix(ncol=5, nrow=0, dimnames=list(NULL, c("phenotype", "threshold", "pc_num", "r2", "theta_eo")))) 
 
   #read in PC table and the PRS table that contains all the scores for that PC  
-  pc_df <- read.table("/gpfs/data/ukb-share/extracted_phenotypes/covar_full/covar_full_age2.pheno", header=TRUE, sep = " ") 
+  pc_df <- read.table("/gpfs/data/ukb-share/extracted_phenotypes/covar_full/covar_full_age2.pheno", header=TRUE, sep = " ", nrows = 1) 
   
-  pc_df <- pc_df %>% select(pc_header(pc))
-  
+  ctypes_pc <- get_ctypes(pc_df, pc_header(pc))
+
+  rm(pc_df)
+
+  pc_df <- read.table("/gpfs/data/ukb-share/extracted_phenotypes/covar_full/covar_full_age2.pheno", header=TRUE, sep = " ", colClasses = ctypes_pc)
+
+  rm(ctypes_pc)
+
   prs_table <- paste0("/scratch/osdominguez/tables/", pop, "/", phen_name, pc, as, ".table")
 
   if (!file.exists(prs_table)) {
@@ -83,18 +114,21 @@ for (pc in pcs) {
   
   for (pval in pvals_list) {
     
-    prs_df <- read.table(prs_table, header=TRUE, sep = " ")
+    print(paste('running hairpin for', pval, 'pvalue and', pc, 'pcs...'))
+	tryCatch( {
+    prs_df <- read.table(prs_table, header=TRUE, sep = " ", nrows = 1)
+    ctypes_prs <- get_ctypes(prs_df, c("FID", "IID", paste0(c("even", "odd", "all"), paste0("_", pval))))
+
+    prs_subset <- read.table(prs_table, header=TRUE, sep = " ", colClasses = ctypes_prs)
     
     # if a bootstrap is being called for resample the dataframe with a set seed 
     if (run_n != 0) {
       # set the seed and resample the dataframe
       set.seed(run_n)
-      prs_df <- prs_df[sample(nrow(prs_df), replace = TRUE), ]     
+      prs_subset <- prs_subset[sample(nrow(prs_subset), replace = TRUE), ]     
     }
     
-    # select the FID and IID of participants. Also select the column names with the pvalue of interest in it
-    prs_subset <- prs_df %>% select(c(FID, IID, contains(pval)))       
-
+    rm(ctypes_prs)
     rm(prs_df)
 
     # if we have the even, odd, and all columns go forward with getting r2 and thetaeo
@@ -141,6 +175,9 @@ for (pc in pcs) {
       # calculate theta even-odd
       thetaeo <- cor(odd_resid, even_resid)
       
+      rm(even_resid)
+      rm(odd_resid)
+
       #create the new row to the hairpin dataframe
       new_row <- data.frame(phenotype = phen_name,
                             threshold = pval,
@@ -149,6 +186,7 @@ for (pc in pcs) {
                             theta_eo = thetaeo)
       rm(thetaeo)
       rm(r_2)
+     
 
     } else {
       rm(prs_subset)
@@ -163,6 +201,11 @@ for (pc in pcs) {
 
     # add the new row to the dataframe
     hairpin_df <- rbind(hairpin_df, new_row) 
+    print('success!')
+  	}, error = function(msg) {
+		print(paste('hairpin failed with error', msg))
+		print("continuing")
+	})
   }
 
   if (boot) {
@@ -171,4 +214,8 @@ for (pc in pcs) {
   } else {
     write.table(hairpin_df, file = paste0(out_dir, phen_name, "_", as, "_base.table"), row.names = F, col.names = F, quote = F, append=TRUE)
   }
+}
+
+if (boot) {
+  write(paste0(pop,"/",phen_name,"_",as,"_bootstrap_",run_n,".table"),file="/gpfs/data/ukb-share/dahl/ophelia/hairpin/txt_files/fin_hairpin.txt",append=TRUE)
 }

@@ -1,4 +1,4 @@
-!/usr/bin/env bash
+#!/usr/bin/env bash
 
 #SBATCH --job-name=Hairpin_PGS_tables_master
 #SBATCH --time=04:00:00

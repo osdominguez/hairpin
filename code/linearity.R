@@ -259,9 +259,9 @@ ztable <- function(phen_name, as, pop, method = "backward", tail = "two") {
   
   f_df <- blank_table 
   
-  print(paste0("Testing hairpin linearity for ", phen_name, "..."))
+  print(paste0("Testing hairpin linearity for ", phen_name, " ", as, " in ", pop, "..."))
   
-  for (pc in unique(hairpin_df$pc_num)) {
+  for (pc in unique(unique(hairpin_df$pc_num))) {
     
     t_df <- get_zvals(hairpin_df %>% filter(pc_num == pc), 
                       boot_df %>% filter(pc_num == pc),
@@ -287,6 +287,15 @@ ztable <- function(phen_name, as, pop, method = "backward", tail = "two") {
 
 ztab_phen <- ztable(phen, as, pop)
 
-ztab_file <- paste0(table_dir, pop, "/", "ztab_", phen, "_", as, ".table")
+if (nrow(ztab_phen) == 0) {
+	exit("ERROR: empty ztable")
+} else {
+	ztab_file <- paste0(table_dir, pop, "/", "ztab_", phen, "_", as, ".table")
+	
+	print("writing ztable...")
 
-write.table(ztab_phen, file = ztab_file, row.names = F, quote = F)
+	write.table(ztab_phen, file = ztab_file, row.names = F, quote = F)
+	
+	print("successfully wrote ztable!")
+}
+

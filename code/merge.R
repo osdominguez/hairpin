@@ -17,7 +17,12 @@ tmp_dir <- paste0("/scratch/osdominguez/temp_boot/", pop, "/")
 boot_df <- data.frame(matrix(ncol=6, nrow=0, dimnames=list(NULL, c("phenotype", "threshold", "pc_num", "r2", "theta_eo", "replicate")))) 
 
 for (i in 1:boot_n) {
-  boot_i <- read.table(file = paste0(tmp_dir, phen_name, "_", as, "_bootstrap_", i, ".table"), header = TRUE)
+  boot_file <- paste0(tmp_dir, phen_name, "_", as, "_bootstrap_", i, ".table")
+  if (!file.exists(boot_file)) {
+	  next
+  }
+	
+  boot_i <- read.table(file = boot_file, header = TRUE)
   
   boot_df <- rbind(boot_df, boot_i)
 }
